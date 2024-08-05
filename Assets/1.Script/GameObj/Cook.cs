@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RestaurantManager : MonoBehaviour
+public class Cook : MonoBehaviour
 {
-    public GameObj Table;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -14,6 +12,11 @@ public class RestaurantManager : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    {
+        
+    }
+
+    public void Action()
     {
         
     }

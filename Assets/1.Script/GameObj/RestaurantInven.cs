@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item : MonoBehaviour, GameObj
+public class RestaurantInven : MonoBehaviour, GameObj
 {
-    public ItemAddressData itemAddressData;
     SpriteRenderer sr;
 
     private void Start()
@@ -14,12 +13,11 @@ public class Item : MonoBehaviour, GameObj
 
     void Update()
     {
-        GameMgr.Instance.SortSprite(sr);
+
     }
 
     public void Action()
     {
-        Inventory.Instance.GetIt(itemAddressData);
-        Destroy(gameObject);
+        PlayerUIManager.Instance.OnRestaurantBoxInven();
     }
 }

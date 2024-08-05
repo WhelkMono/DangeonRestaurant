@@ -2,13 +2,15 @@
 
     "foodDatas": [
         {
+            "id": 0,
             "name": "벌레 먹은 사과",
             "description": "벌래와 사과를 이용한 평범한 요리다.",
             "price": 5,
             "satiety": 4,
-            "recipe": [ "사과", "애벌레"]
+            "recipe": [ "사과", "애벌레" ]
         },
         {
+            "id": 1,
             "name": "사과파이",
             "description": "맛있다",
             "price": 20,
@@ -18,12 +20,14 @@
     ],
     "ingredientDatas": [
         {
+            "id": 0,
             "name": "사과",
             "description": "가장 흔한 과일",
             "satiety": 1,
             "price": 1
         },
         {
+            "id": 1,
             "name": "애벌레",
             "description": "에벌래는 좋은 단백질원이죠",
             "satiety": 2,

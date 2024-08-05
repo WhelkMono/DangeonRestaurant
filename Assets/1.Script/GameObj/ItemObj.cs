@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class Portal : MonoBehaviour, GameObj
+public class ItemObj : MonoBehaviour, GameObj
 {
-    public string sceneName;
+    public ItemData itemData;
     SpriteRenderer sr;
+
+    public void Init(ItemData _itemData)
+    {
+        itemData = _itemData;
+    }
 
     private void Start()
     {
@@ -20,7 +24,9 @@ public class Portal : MonoBehaviour, GameObj
 
     public void Action()
     {
-        PlayerUIManager.Instance.playerInventory.SaveItemData(true);
-        LoadSceneManager.LoadScene(sceneName);
+        if (PlayerUIManager.Instance.playerInventory.GetIt(itemData))
+        {
+            Destroy(gameObject);
+        }
     }
 }

@@ -7,6 +7,7 @@ using UnityEngine;
 [System.Serializable]
 public class NPCData
 {
+    public int id;
     public string name;
     public string[] desc;
 }
@@ -20,6 +21,7 @@ public class ObjectData
 [System.Serializable]
 public class FoodData
 {
+    public int id;
     public string name;
     public string description;
     public int price;
@@ -29,26 +31,34 @@ public class FoodData
 [System.Serializable]
 public class IngredientData
 {
+    public int id;
     public string name;
     public string description;
     public int price;
 }
 
 [System.Serializable]
-public class ItemData
+public class ItemJsonData
 {
     public List<FoodData> foodDatas;
     public List<IngredientData> ingredientDatas;
 
-    public ItemData()
+    public ItemJsonData()
     {
         foodDatas = new List<FoodData>();
         ingredientDatas = new List<IngredientData>();
     }
 }
 
+public enum ItemDataType
+{
+    foodData,
+    ingredientData,
+    gadget
+}
+
 [System.Serializable]
-public class ItemAddressData
+public class ItemData
 {
     public ItemDataType type;
     public int id;
@@ -56,24 +66,68 @@ public class ItemAddressData
 }
 
 [System.Serializable]
+public class InventoryData
+{
+    public int invenCount;
+    public List<ItemData> itemDatas;
+
+    public InventoryData()
+    {
+        invenCount = 10;
+        itemDatas = new();
+
+        /*//Test
+        ItemData itemData = new();
+        itemData.type = ItemDataType.ingredientDat;
+        itemData.id = 1;
+        itemData.count = 3;
+        itemDatas = new();
+        itemDatas.Add(itemData);*/
+    }
+}
+
+[System.Serializable]
 public class PlayerData
 {
-    public List<ItemAddressData> inventoryData;
-    public List<ItemAddressData> resttaurantBoxData;
+    public int HP;
+    public int Hunger;
+    public int Coin;
+
+    public PlayerData()
+    {
+        HP = 100;
+        Hunger = 100;
+        Coin = 0;
+    }
+}
+
+[System.Serializable]
+public class StorageData
+{
+    public PlayerData playerData;
+    public InventoryData playerInven;
+    public InventoryData restaurantBoxInven;
+
+    public StorageData()
+    {
+        playerData = new PlayerData();
+        playerInven = new InventoryData();
+        restaurantBoxInven = new InventoryData();
+    }
 }
 
 public class JsonDataManager : Singleton<JsonDataManager>
 {
     private string filePath;
-    public PlayerData playerData;
-    public ItemData itemData;
+    public StorageData storageData;
     public ObjectData objectData;
+    public ItemJsonData itemData;
 
     void Awake()
     {
         DontDestroyOnLoad(this);
 
-        //ResetPlayerJsonData();
+        ResetPlayerJsonData();
         //SavePlayerJsonData();
         LoadPlayerJsonData();
         LoadItemJsonData();
@@ -84,11 +138,7 @@ public class JsonDataManager : Singleton<JsonDataManager>
     {
         filePath = "Assets/7.Data/PlayerData.json";
 
-        PlayerData data = new PlayerData();
-        data.inventoryData = new List<ItemAddressData>();
-        data.resttaurantBoxData = new List<ItemAddressData>();
-
-        string jsonData = JsonUtility.ToJson(playerData);
+        string jsonData = JsonUtility.ToJson(new StorageData());
         File.WriteAllText(filePath, jsonData, Encoding.UTF8);
     }
 
@@ -96,7 +146,7 @@ public class JsonDataManager : Singleton<JsonDataManager>
     {
         filePath = "Assets/7.Data/PlayerData.json";
 
-        string jsonData = JsonUtility.ToJson(playerData);
+        string jsonData = JsonUtility.ToJson(storageData);
         File.WriteAllText(filePath, jsonData, Encoding.UTF8);
     }
 
@@ -105,7 +155,7 @@ public class JsonDataManager : Singleton<JsonDataManager>
         filePath = "Assets/7.Data/PlayerData.json";
 
         string loadedJsonData = File.ReadAllText(filePath, Encoding.UTF8);
-        playerData = JsonUtility.FromJson<PlayerData>(loadedJsonData);
+        storageData = JsonUtility.FromJson<StorageData>(loadedJsonData);
     }
 
     private void LoadObjectJsonData()
@@ -121,6 +171,6 @@ public class JsonDataManager : Singleton<JsonDataManager>
         filePath = "Assets/7.Data/ItemData.json";
 
         string loadedJsonData = File.ReadAllText(filePath, Encoding.UTF8);
-        itemData = JsonUtility.FromJson<ItemData>(loadedJsonData);
+        itemData = JsonUtility.FromJson<ItemJsonData>(loadedJsonData);
     }
 }
