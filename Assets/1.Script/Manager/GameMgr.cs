@@ -18,9 +18,25 @@ public class GameMgr : Singleton<GameMgr>
         }
     }
 
+    private bool isPause;
+    public bool IsPause
+    {
+        get
+        {
+            return isPause;
+        }
+    }
+
     private void Awake()
     {
+        isPause = false;
         DontDestroyOnLoad(this);
+    }
+
+    public void Pause(bool _isPause)
+    {
+        isPause = _isPause;
+        Time.timeScale = IsPause ? 0 : 1;
     }
 
     public void SortSprite(SpriteRenderer sr)

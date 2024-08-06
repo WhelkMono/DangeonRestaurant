@@ -3,6 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+public enum InventoyType
+{
+    player,
+    food,
+    ingredient,
+    box
+}
+
 public class Inventory : MonoBehaviour
 {
     [SerializeField] private GameObject InventoryPanel;
@@ -11,10 +20,12 @@ public class Inventory : MonoBehaviour
     private Item itemPrefab;
     public List<Slot> invenSlots;
     private int invenCount;
+    private InventoyType inventoyType;
 
-    public void Init(InventoryData inventoryData, Slot _slotPrefab, Item _itemPrefab)
+    public void Init(InventoryData inventoryData, InventoyType _inventoyType, Slot _slotPrefab, Item _itemPrefab)
     {
         invenCount = inventoryData.invenCount;
+        inventoyType = _inventoyType;
         slotPrefab = _slotPrefab;
         itemPrefab = _itemPrefab;
 
@@ -29,7 +40,7 @@ public class Inventory : MonoBehaviour
         for (int i = 0; i < inventoryData.invenCount; i++)
         {
             invenSlots.Add(Instantiate(slotPrefab, invenContent.transform));
-            invenSlots[i].Init(null);
+            invenSlots[i].Init(null, inventoyType);
         }
 
         //LoadItemData
@@ -39,15 +50,14 @@ public class Inventory : MonoBehaviour
         {
             Item item = Instantiate(itemPrefab, invenSlots[i].transform);
             item.Init(itemDatas[i]);
-            invenSlots[i].Init(item);
+            invenSlots[i].Init(item, inventoyType);
         }
-
-        InventoryPanel.SetActive(false);
     }
 
     public void OnInventory(bool isAction)
     {
         InventoryPanel.SetActive(isAction);
+        GameMgr.Instance.Pause(isAction);
     }
 
     public bool GetIt(ItemData itemData)
@@ -58,7 +68,7 @@ public class Inventory : MonoBehaviour
             {
                 Item item = Instantiate(itemPrefab, invenSlots[i].transform);
                 item.Init(itemData);
-                invenSlots[i].Init(item);
+                invenSlots[i].Init(item, inventoyType);
                 return true;
             }
             else if (invenSlots[i].item.itemData.type == itemData.type &&
@@ -73,7 +83,7 @@ public class Inventory : MonoBehaviour
         return false;
     }
 
-    public void SaveItemData(bool isPlayer)
+    public void SaveItemData()
     {
         InventoryData inventoryData = new();
         
@@ -84,9 +94,20 @@ public class Inventory : MonoBehaviour
                 inventoryData.itemDatas.Add(invenSlots[i].item.itemData);
         }
 
-        if(isPlayer)
-            JsonDataManager.Instance.storageData.playerInven = inventoryData;
-        else
-            JsonDataManager.Instance.storageData.restaurantBoxInven = inventoryData;
+        switch (inventoyType)
+        {
+            case InventoyType.player:
+                JsonDataManager.Instance.storageData.playerInven = inventoryData;
+                break;
+            case InventoyType.food:
+                JsonDataManager.Instance.storageData.foodBoxInven = inventoryData;
+                break;
+            case InventoyType.ingredient:
+                JsonDataManager.Instance.storageData.ingredientBoxInven = inventoryData;
+                break;
+            case InventoyType.box:
+                Debug.Log("저장할 수 없는 데이터 입니다.");
+                break;
+        }
     }
 }

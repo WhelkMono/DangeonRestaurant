@@ -19,34 +19,44 @@ public class ObjectData
 }
 
 [System.Serializable]
-public class FoodData
+public class RecipeData
 {
     public int id;
-    public string name;
-    public string description;
-    public int price;
-    public string[] recipe;
+    public int count;
 }
 
 [System.Serializable]
-public class IngredientData
+public class FoodJsonData
+{
+    public int id;
+    public string name;
+    public string description;
+    public RecipeData[] recipe;
+    public int price;
+    public int satiety;
+    public int[] taste;
+}
+
+[System.Serializable]
+public class IngredientJsonData
 {
     public int id;
     public string name;
     public string description;
     public int price;
+    public int satiety;
 }
 
 [System.Serializable]
 public class ItemJsonData
 {
-    public List<FoodData> foodDatas;
-    public List<IngredientData> ingredientDatas;
+    public List<FoodJsonData> foodDatas;
+    public List<IngredientJsonData> ingredientDatas;
 
     public ItemJsonData()
     {
-        foodDatas = new List<FoodData>();
-        ingredientDatas = new List<IngredientData>();
+        foodDatas = new List<FoodJsonData>();
+        ingredientDatas = new List<IngredientJsonData>();
     }
 }
 
@@ -71,7 +81,7 @@ public class InventoryData
     public int invenCount;
     public List<ItemData> itemDatas;
 
-    public InventoryData()
+    public InventoryData(/*int invenCount*/)
     {
         invenCount = 10;
         itemDatas = new();
@@ -83,6 +93,20 @@ public class InventoryData
         itemData.count = 3;
         itemDatas = new();
         itemDatas.Add(itemData);*/
+    }
+}
+
+[System.Serializable]
+public class FoodData
+{
+    public int id;
+    public int level;
+
+    //tset¿ëµµ
+    public FoodData()
+    {
+        id = 0;
+        level = 1;
     }
 }
 
@@ -105,14 +129,22 @@ public class PlayerData
 public class StorageData
 {
     public PlayerData playerData;
+    public List<FoodData> foodDatas;
     public InventoryData playerInven;
-    public InventoryData restaurantBoxInven;
+    public InventoryData foodBoxInven;
+    public InventoryData ingredientBoxInven;
 
     public StorageData()
     {
         playerData = new PlayerData();
+        foodDatas = new List<FoodData>();
         playerInven = new InventoryData();
-        restaurantBoxInven = new InventoryData();
+        foodBoxInven = new InventoryData();
+        ingredientBoxInven = new InventoryData();
+
+        //test
+        FoodData foodData = new FoodData();
+        foodDatas.Add(foodData);
     }
 }
 

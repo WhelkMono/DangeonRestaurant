@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class SpriteManager : Singleton<SpriteManager>
 {
-    public Sprite[] ItemSprites;
+    public Sprite[] FoodSprites;
+    public Sprite[] IngredientSprites;
 
     void Awake()
     {

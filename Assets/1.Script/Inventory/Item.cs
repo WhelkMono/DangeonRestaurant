@@ -20,7 +20,7 @@ public class Item : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         slot = null;
         itemData = _itemData;
 
-        image.sprite = SpriteManager.Instance.ItemSprites[itemData.id];
+        image.sprite = SpriteManager.Instance.IngredientSprites[itemData.id];
         countTxt.text = itemData.count.ToString();
     }
 

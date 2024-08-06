@@ -4,25 +4,24 @@ using UnityEngine;
 
 public class PlayerUIManager : Singleton<PlayerUIManager>
 {
-    [SerializeField] private GameObject interactionKey;
+    [SerializeField] private GameObject interactionKey; //수정필요
     public Inventory playerInventory;
     [SerializeField] private Inventory boxInventory;
     [SerializeField] private Slot slotPrefab;
     [SerializeField] private Item itemPrefab;
 
     private GameObj scanObject;
-    private bool isAction;
-    private bool isRBox;
+    private bool isAction; //인밴토리 열림 여부
 
     public Transform canvasTrans;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerInventory.Init(JsonDataManager.Instance.storageData.playerInven, slotPrefab, itemPrefab);
-        boxInventory.Init(JsonDataManager.Instance.storageData.restaurantBoxInven, slotPrefab, itemPrefab);
-
-        isRBox = false;
+        playerInventory.Init(JsonDataManager.Instance.storageData.playerInven, InventoyType.player, slotPrefab, itemPrefab);
+        playerInventory.Init(JsonDataManager.Instance.storageData.foodBoxInven, InventoyType.food, slotPrefab, itemPrefab);
+        playerInventory.OnInventory(false);
+        boxInventory.OnInventory(false);
         isAction = false;
         interactionKey.SetActive(false);
     }
@@ -30,39 +29,45 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F1))
-        {
-            OnBoxInven(new InventoryData());
-        }
-
+        //인밴토리 열기
         if (Input.GetKeyDown(KeyCode.E))
         {
-            isAction = !isAction;
-            playerInventory.OnInventory(isAction);
-            if(isAction == false)
+            if (isAction == true)
             {
-                if (isRBox)
-                {
-                    isRBox = false;
-                    playerInventory.SaveItemData(true);
-                    boxInventory.SaveItemData(false);
-                }
+                playerInventory.SaveItemData();
+                boxInventory.SaveItemData();
+                playerInventory.OnInventory(false);
                 boxInventory.OnInventory(false);
+                isAction = false;
             }
-            Time.timeScale = isAction ? 0 : 1;
+            else if (!GameMgr.Instance.IsPause)
+            {
+                isAction = true;
+                playerInventory.OnInventory(true);
+            }
         }
 
-        if (Input.GetKeyDown(KeyCode.F) && scanObject != null && !isAction)
+        //스캔된 오브젝트 실행
+        if (Input.GetKeyDown(KeyCode.F) && scanObject != null)
         {
+            playerInventory.SaveItemData();
+            boxInventory.SaveItemData();
             interactionKey.SetActive(false);
             scanObject.Action();
         }
     }
 
-    public void OnRestaurantBoxInven()
+    public void OnFoodBoxInven()
     {
-        boxInventory.Init(JsonDataManager.Instance.storageData.restaurantBoxInven, slotPrefab, itemPrefab);
-        isRBox = true;
+        boxInventory.Init(JsonDataManager.Instance.storageData.foodBoxInven, InventoyType.food, slotPrefab, itemPrefab);
+        isAction = true;
+        boxInventory.OnInventory(true);
+        playerInventory.OnInventory(true);
+    }
+
+    public void OnIngredientBoxInven()
+    {
+        boxInventory.Init(JsonDataManager.Instance.storageData.ingredientBoxInven, InventoyType.ingredient, slotPrefab, itemPrefab);
         isAction = true;
         boxInventory.OnInventory(true);
         playerInventory.OnInventory(true);
@@ -70,7 +75,7 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
 
     public void OnBoxInven(InventoryData _inventoryData)
     {
-        boxInventory.Init(_inventoryData, slotPrefab, itemPrefab);
+        boxInventory.Init(_inventoryData, InventoyType.box, slotPrefab, itemPrefab);
         isAction = true;
         boxInventory.OnInventory(true);
         playerInventory.OnInventory(true);
@@ -83,7 +88,7 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
         else
             scanObject = null;
 
-        if (scanObject != null && !TalkManager.Instance.isAction)
+        if (scanObject != null && !TalkManager.Instance.isAction && Time.timeScale != 0)
         {
             interactionKey.SetActive(true);
         }

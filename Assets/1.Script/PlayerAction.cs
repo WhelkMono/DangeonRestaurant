@@ -35,6 +35,9 @@ public class PlayerAction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameMgr.Instance.IsPause)
+            return;
+
         Attack();
         Move();
         PlayerUIManager.Instance.OnInteractionKey(scanObject);

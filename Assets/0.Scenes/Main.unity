@@ -730,14 +730,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dba58e917f52daa489887209019a48eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerData:
-    inventoryData: []
-    resttaurantBoxData: []
+  storageData:
+    playerData:
+      HP: 100
+      Hunger: 100
+      Coin: 0
+    foodDatas:
+    - id: 0
+      level: 1
+    playerInven:
+      invenCount: 10
+      itemDatas: []
+    foodBoxInven:
+      invenCount: 10
+      itemDatas: []
+    ingredientBoxInven:
+      invenCount: 10
+      itemDatas: []
+  objectData:
+    npcDatas: []
   itemData:
     foodDatas: []
     ingredientDatas: []
-  objectData:
-    npcDatas: []
 --- !u!4 &1575578625
 Transform:
   m_ObjectHideFlags: 0
@@ -881,7 +895,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7d7007b663600e489f517857ad77670, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ItemSprites:
+  FoodSprites:
+  - {fileID: 21300000, guid: 8fa37c2c8b9bd654c96a4fae10f387a1, type: 3}
+  IngredientSprites:
   - {fileID: 21300000, guid: 61d01e8616313344b978a6518fd86ed6, type: 3}
   - {fileID: 21300000, guid: 4043a37a958048f4a9402cf4f7c6157f, type: 3}
 --- !u!1 &2031395137

@@ -20,7 +20,7 @@ public class Portal : MonoBehaviour, GameObj
 
     public void Action()
     {
-        PlayerUIManager.Instance.playerInventory.SaveItemData(true);
+        PlayerUIManager.Instance.playerInventory.SaveItemData();
         LoadSceneManager.LoadScene(sceneName);
     }
 }
