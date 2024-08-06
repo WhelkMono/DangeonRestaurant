@@ -1,1 +1,26 @@
-﻿{"playerData":{"HP":100,"Hunger":100,"Coin":0},"foodDatas":[{"id":0,"level":1}],"playerInven":{"invenCount":10,"itemDatas":[]},"foodBoxInven":{"invenCount":10,"itemDatas":[]},"ingredientBoxInven":{"invenCount":10,"itemDatas":[]}}
+﻿{
+    
+    "playerData": {
+        "HP": 100,
+        "Hunger": 100,
+        "Coin": 0
+    },
+    "foodDatas": [
+        {
+            "id": 0,
+            "level": 1
+        }
+    ],
+    "playerInven": {
+        "invenCount": 10,
+        "itemDatas": []
+    },
+    "foodBoxInven": {
+        "invenCount": 10,
+        "itemDatas": []
+    },
+    "ingredientBoxInven": {
+        "invenCount": 10,
+        "itemDatas": []
+    }
+}

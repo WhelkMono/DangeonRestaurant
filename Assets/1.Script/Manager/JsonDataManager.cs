@@ -159,7 +159,7 @@ public class JsonDataManager : Singleton<JsonDataManager>
     {
         DontDestroyOnLoad(this);
 
-        ResetPlayerJsonData();
+        //ResetPlayerJsonData();
         //SavePlayerJsonData();
         LoadPlayerJsonData();
         LoadItemJsonData();

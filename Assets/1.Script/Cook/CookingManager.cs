@@ -93,7 +93,8 @@ public class CookingManager : Singleton<CookingManager>
 
         foodData_Panel.image.sprite = SpriteManager.Instance.FoodSprites[foodData.id];
         foodData_Panel.level.text = foodData.level.ToString();
-        foodData_Panel.price.text = Mathf.CeilToInt(foodJsonData.price * ((10f + foodData.level) / 10f)).ToString();
+        foodData_Panel.price.text = 
+            Mathf.RoundToInt(foodJsonData.price + (foodJsonData.price * (foodData.level * 2 / 10f))).ToString();
         foodData_Panel.satiety.text = foodJsonData.satiety.ToString();
         foodData_Panel.taste.text = foodJsonData.taste[foodData.level].ToString();
 
