@@ -64,14 +64,7 @@ public class Inventory : MonoBehaviour
     {
         for (int i = 0; i < invenCount; i++)
         {
-            if(invenSlots[i].item == null)
-            {
-                Item item = Instantiate(itemPrefab, invenSlots[i].transform);
-                item.Init(itemData);
-                invenSlots[i].Init(item, inventoyType);
-                return true;
-            }
-            else if (invenSlots[i].item.itemData.type == itemData.type &&
+            if (invenSlots[i].item != null && invenSlots[i].item.itemData.type == itemData.type &&
                 invenSlots[i].item.itemData.id == itemData.id)
             {
                 invenSlots[i].item.AddData(itemData.count);
@@ -79,8 +72,35 @@ public class Inventory : MonoBehaviour
             }
         }
 
+        for (int i = 0; i < invenCount; i++)
+        {
+            if (invenSlots[i].item == null)
+            {
+                Item item = Instantiate(itemPrefab, invenSlots[i].transform);
+                item.Init(itemData);
+                invenSlots[i].Init(item, inventoyType);
+                return true;
+            }
+        }
+
         Debug.Log("인벤토리가 가득 찼습니다.");
         return false;
+    }
+
+    public void DeletedItem(ItemData itemData)
+    {
+        for (int i = 0; i < invenCount; i++)
+        {
+            if (invenSlots[i].item != null && 
+                invenSlots[i].item.itemData.type == itemData.type &&
+                invenSlots[i].item.itemData.id == itemData.id)
+            {
+                invenSlots[i].item.SubData(itemData.count);
+                return;
+            }
+        }
+
+        Debug.Log("찾는 아이템이 인벤토리에 없습니다.");
     }
 
     public void SaveItemData()

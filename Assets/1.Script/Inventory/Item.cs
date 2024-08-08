@@ -41,6 +41,18 @@ public class Item : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         countTxt.text = itemData.count.ToString();
     }
 
+    public void SubData(int count)
+    {
+        if(itemData.count - count <= 0)
+        {
+            slot.item = null;
+            Destroy(gameObject);
+        }
+
+        itemData.count -= count;
+        countTxt.text = itemData.count.ToString();
+    }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (itemData != null)

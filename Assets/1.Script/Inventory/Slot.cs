@@ -43,12 +43,19 @@ public class Slot : MonoBehaviour, IDropHandler
                     break;
             }
 
+
             //Debug.Log("OnDrop");
             if (item == null)
             {
                 droppedItem.slot.item = null;
                 droppedItem.slot = this;
                 item = droppedItem;
+            }
+            else if (droppedItem.itemData.type ==  item.itemData.type &&
+                droppedItem.itemData.id == item.itemData.id)
+            {
+                item.AddData(droppedItem.itemData.count);
+                Destroy(droppedItem.gameObject);
             }
             else
             {

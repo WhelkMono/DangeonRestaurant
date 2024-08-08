@@ -173,6 +173,16 @@ public class CookingManager : Singleton<CookingManager>
             itemData.id = _id;
             itemData.count = (int)cook_Panel.slider.value;
             PlayerUIManager.Instance.playerInventory.GetIt(itemData);
+
+            foreach (var recipe in JsonDataManager.Instance.itemData.foodDatas[_id].recipe)
+            {
+                itemData = new();
+                itemData.type = ItemDataType.ingredientData;
+                itemData.id = recipe.id;
+                itemData.count = recipe.count;
+
+                PlayerUIManager.Instance.DeletedBoxItem(InventoyType.ingredient, itemData);
+            }
         }
         else
         {
@@ -214,6 +224,11 @@ public class CookingManager : Singleton<CookingManager>
         cookCheck_Panel.cookCheck_Panel.SetActive(false);
         isCooking = !isCooking;
         Cooking_Panel.SetActive(isCooking);
+        if (isCooking)
+        {
+            //playerInventory ²ô±â
+            PlayerUIManager.Instance.OnPlayerInven(false);
+        }
         GameMgr.Instance.Pause(isCooking);
     }
 }

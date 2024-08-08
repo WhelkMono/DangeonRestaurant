@@ -34,16 +34,13 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
         {
             if (isAction == true)
             {
-                playerInventory.SaveItemData();
-                boxInventory.SaveItemData();
-                playerInventory.OnInventory(false);
-                boxInventory.OnInventory(false);
                 isAction = false;
+                OnPlayerInven(isAction);
             }
             else if (!GameMgr.Instance.IsPause)
             {
                 isAction = true;
-                playerInventory.OnInventory(true);
+                OnPlayerInven(isAction);
             }
         }
 
@@ -57,17 +54,48 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
         }
     }
 
-    public void OnFoodBoxInven()
+    public void OnPlayerInven(bool active)
     {
-        boxInventory.Init(JsonDataManager.Instance.storageData.foodBoxInven, InventoyType.food, slotPrefab, itemPrefab);
-        isAction = true;
-        boxInventory.OnInventory(true);
-        playerInventory.OnInventory(true);
+        if (active)
+        {
+            playerInventory.OnInventory(true);
+        }
+        else
+        {
+            playerInventory.SaveItemData();
+            boxInventory.SaveItemData();
+            playerInventory.OnInventory(false);
+            boxInventory.OnInventory(false);
+        }
     }
 
-    public void OnIngredientBoxInven()
+    public void DeletedBoxItem(InventoyType inventoyType, ItemData itemData)
     {
-        boxInventory.Init(JsonDataManager.Instance.storageData.ingredientBoxInven, InventoyType.ingredient, slotPrefab, itemPrefab);
+        SetBox(inventoyType);
+        boxInventory.DeletedItem(itemData);
+    }
+
+    public void SetBox(InventoyType inventoyType)
+    {
+        InventoryData inventoryData;
+        switch (inventoyType)
+        {
+            case InventoyType.food:
+                inventoryData = JsonDataManager.Instance.storageData.foodBoxInven;
+                break;
+            case InventoyType.ingredient:
+                inventoryData = JsonDataManager.Instance.storageData.ingredientBoxInven;
+                break;
+            default:
+                return;
+        }
+
+        boxInventory.Init(inventoryData, inventoyType, slotPrefab, itemPrefab);
+    }
+
+    public void OnBoxInven(InventoyType inventoyType)
+    {
+        SetBox(inventoyType);
         isAction = true;
         boxInventory.OnInventory(true);
         playerInventory.OnInventory(true);
