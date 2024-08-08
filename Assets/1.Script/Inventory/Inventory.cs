@@ -20,7 +20,7 @@ public class Inventory : MonoBehaviour
     private Item itemPrefab;
     public List<Slot> invenSlots;
     private int invenCount;
-    private InventoyType inventoyType;
+    public InventoyType inventoyType;
 
     public void Init(InventoryData inventoryData, InventoyType _inventoyType, Slot _slotPrefab, Item _itemPrefab)
     {

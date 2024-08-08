@@ -20,7 +20,18 @@ public class Item : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         slot = null;
         itemData = _itemData;
 
-        image.sprite = SpriteManager.Instance.IngredientSprites[itemData.id];
+        switch (_itemData.type)
+        {
+            case ItemDataType.foodData:
+                    image.sprite = SpriteManager.Instance.FoodSprites[itemData.id];
+                break;
+            case ItemDataType.ingredientData:
+                image.sprite = SpriteManager.Instance.IngredientSprites[itemData.id];
+                break;
+            case ItemDataType.gadget:
+                image.sprite = SpriteManager.Instance.GadgetSprites[itemData.id];
+                break;
+        }
         countTxt.text = itemData.count.ToString();
     }
 

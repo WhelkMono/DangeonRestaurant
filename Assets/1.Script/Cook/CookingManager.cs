@@ -19,13 +19,33 @@ public class CookingManager : Singleton<CookingManager>
         public TMP_Text description;
         public Transform recipe_Content;
     }
+    [System.Serializable]
+    public class Cook_Panel
+    {
+        public GameObject cook_Panel;
+        public Image image;
+        public TMP_Text NameTxt;
+        public Slider slider;
+        public TMP_Text CountTxt;
+    }
+
+    [System.Serializable]
+    public class CookCheck_Panel
+    {
+        public GameObject cookCheck_Panel;
+        public Image image;
+        public TMP_Text NameTxt;
+        public TMP_Text CountTxt;
+    }
 
     [SerializeField] private GameObject Cooking_Panel;
     [SerializeField] private Transform recipeSlot_Content;
     [SerializeField] private RecipeSlot recipeSlotPrefab;
-
     [SerializeField] private FoodData_Panel foodData_Panel;
     [SerializeField] private IngredientSlot ingredientSlotPrefab;
+
+    [SerializeField] private Cook_Panel cook_Panel;
+    [SerializeField] private CookCheck_Panel cookCheck_Panel;
 
     private List<IngredientSlot> ingredientSlots;
     private List<RecipeSlot> recipeSlots;
@@ -47,7 +67,6 @@ public class CookingManager : Singleton<CookingManager>
     {
         isCooking = false;
         Cooking_Panel.SetActive(false);
-        foodData_Panel.foodData_Panel.SetActive(false);
 
         int n = recipeSlots.Count;
         for (int i = 0; i < n; i++)
@@ -66,15 +85,7 @@ public class CookingManager : Singleton<CookingManager>
         }
     }
 
-    public void OnCook()
-    {
-
-    }
-
-    public void OnResearch()
-    {
-
-    }
+    private int _id;
 
     public void ShowFoodData(FoodData foodData)
     {
@@ -89,6 +100,7 @@ public class CookingManager : Singleton<CookingManager>
         foodData_Panel.foodData_Panel.SetActive(true);
 
         FoodJsonData foodJsonData = JsonDataManager.Instance.itemData.foodDatas[foodData.id];
+        _id = foodJsonData.id;
         foodData_Panel.title.text = foodJsonData.name;
 
         foodData_Panel.image.sprite = SpriteManager.Instance.FoodSprites[foodData.id];
@@ -103,6 +115,8 @@ public class CookingManager : Singleton<CookingManager>
         List<ItemData> itemDatas = JsonDataManager.Instance.storageData.ingredientBoxInven.itemDatas;
         Sprite[] sprites = SpriteManager.Instance.IngredientSprites;
         List<IngredientJsonData> ingredientJsonDatas = JsonDataManager.Instance.itemData.ingredientDatas;
+
+        int cookCount = -1;
 
         for (int i = 0; i < foodJsonData.recipe.Length; i++)
         {
@@ -125,7 +139,51 @@ public class CookingManager : Singleton<CookingManager>
             IngredientSlot ingredientSlot = Instantiate(ingredientSlotPrefab, foodData_Panel.recipe_Content);
             ingredientSlot.Init(sprite, _name, requCount, possCount, "");
             ingredientSlots.Add(ingredientSlot);
+
+            if (Mathf.FloorToInt((float)possCount / requCount) < cookCount || cookCount == -1)
+                cookCount = Mathf.FloorToInt((float)possCount / requCount);
         }
+
+        cook_Panel.slider.maxValue = cookCount;
+        cook_Panel.slider.value = 1;
+        cook_Panel.image = foodData_Panel.image;
+        cook_Panel.NameTxt.text = foodData_Panel.title.text;
+        cook_Panel.CountTxt.text = "1/" + cook_Panel.slider.maxValue.ToString();
+        cook_Panel.cook_Panel.SetActive(true);
+    }
+
+    public void OnSetCookCountTxt()
+    {
+        if(cook_Panel.slider.value == 0)
+            cook_Panel.slider.value = 1;
+        cook_Panel.CountTxt.text = cook_Panel.slider.value.ToString() + "/" + cook_Panel.slider.maxValue.ToString();
+    }
+
+    public void OnCook(bool active)
+    {
+        cookCheck_Panel.cookCheck_Panel.SetActive(active);
+        if (active)
+        {
+            cookCheck_Panel.image = foodData_Panel.image;
+            cookCheck_Panel.NameTxt.text = foodData_Panel.title.text;
+            cookCheck_Panel.CountTxt.text = cook_Panel.slider.value.ToString();
+
+            ItemData itemData = new();
+            itemData.type = ItemDataType.foodData;
+            itemData.id = _id;
+            itemData.count = (int)cook_Panel.slider.value;
+            PlayerUIManager.Instance.playerInventory.GetIt(itemData);
+        }
+        else
+        {
+            foodData_Panel.foodData_Panel.SetActive(false);
+            cook_Panel.cook_Panel.SetActive(false);
+        }
+    }
+
+    public void OnResearch()
+    {
+
     }
 
     public void OnSort(TMP_Dropdown tMP_Dropdown)
@@ -151,6 +209,9 @@ public class CookingManager : Singleton<CookingManager>
 
     public void OnCookPanel()
     {
+        foodData_Panel.foodData_Panel.SetActive(false);
+        cook_Panel.cook_Panel.SetActive(false);
+        cookCheck_Panel.cookCheck_Panel.SetActive(false);
         isCooking = !isCooking;
         Cooking_Panel.SetActive(isCooking);
         GameMgr.Instance.Pause(isCooking);

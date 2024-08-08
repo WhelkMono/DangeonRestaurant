@@ -6,6 +6,7 @@ public class SpriteManager : Singleton<SpriteManager>
 {
     public Sprite[] FoodSprites;
     public Sprite[] IngredientSprites;
+    public Sprite[] GadgetSprites;
 
     void Awake()
     {

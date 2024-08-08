@@ -19,7 +19,7 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
     void Start()
     {
         playerInventory.Init(JsonDataManager.Instance.storageData.playerInven, InventoyType.player, slotPrefab, itemPrefab);
-        playerInventory.Init(JsonDataManager.Instance.storageData.foodBoxInven, InventoyType.food, slotPrefab, itemPrefab);
+        boxInventory.Init(JsonDataManager.Instance.storageData.foodBoxInven, InventoyType.food, slotPrefab, itemPrefab);
         playerInventory.OnInventory(false);
         boxInventory.OnInventory(false);
         isAction = false;
