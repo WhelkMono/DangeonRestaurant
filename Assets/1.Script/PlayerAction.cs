@@ -21,8 +21,11 @@ public class PlayerAction : MonoBehaviour
 
     public bool isHouse;
 
-    private void Start()
+    public void Init(Vector2 startPos, bool isHouse)
     {
+        transform.position = startPos;
+        this.isHouse = isHouse;
+
         rigid = GetComponent<Rigidbody2D>();
         am = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();

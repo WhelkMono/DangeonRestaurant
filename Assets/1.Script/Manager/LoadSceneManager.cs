@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class LoadSceneManager : MonoBehaviour
 {
     static string nextScene;
+    public static bool isFirstLoad = false;
 
     [SerializeField] private Image progresBar;
 
@@ -51,15 +52,34 @@ public class LoadSceneManager : MonoBehaviour
                 if (progresBar.fillAmount >= 1f)
                 {
                     op.allowSceneActivation = true;
-                    if (nextScene == "Game")
+                    if (isFirstLoad)
+                    {
+                        isFirstLoad = false;
+                        LocationData locationData = JsonDataManager.Instance.storageData.playerLocation;
+                        string sceneName = "GameUI";
+
+                        if(locationData.spaceType == SpaceType.Restaurant &&
+                            locationData.spaceType == SpaceType.Myroom)
+                        {
+                            sceneName = "RestaurantUI";
+                        }
+
+                        SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+                        SceneManager.LoadScene("PlayerUI", LoadSceneMode.Additive);
+                        GameMgr.Instance.MabSetting(Vector3.zero, false);
+                        TimeManager.Instance.LoadData();
+                    }
+                    else if (nextScene == "Game")
                     {
                         SceneManager.LoadScene("GameUI", LoadSceneMode.Additive);
                         SceneManager.LoadScene("PlayerUI", LoadSceneMode.Additive);
+                        GameMgr.Instance.MabSetting(new Vector3(-2.5f, -0.5f, 0), false);
                     }
                     else if (nextScene == "Restaurant")
                     {
                         SceneManager.LoadScene("RestaurantUI", LoadSceneMode.Additive);
                         SceneManager.LoadScene("PlayerUI", LoadSceneMode.Additive);
+                        GameMgr.Instance.MabSetting(new Vector3(-5.5f, -1, 0), false);
                     }
                     yield break;
                 }

@@ -39,11 +39,22 @@ public class GameMgr : Singleton<GameMgr>
         Time.timeScale = IsPause ? 0 : 1;
     }
 
+    public Vector3 pos;
+    public bool isFirstLoad;
+
+    public void MabSetting(Vector3 pos, bool isFirstLoad)
+    {
+        this.pos = pos;
+        this.isFirstLoad = isFirstLoad;
+    }
+
     public void SortSprite(SpriteRenderer sr)
     {
         if (p == null)
         {
             p = FindAnyObjectByType<PlayerAction>();
+            if (p == null)
+                return;
         }
 
         if (p.transform.position.y - sr.transform.position.y > 0)

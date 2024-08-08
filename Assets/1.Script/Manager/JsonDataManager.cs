@@ -111,6 +111,44 @@ public class FoodData
 }
 
 [System.Serializable]
+public class TimeData
+{
+    public int week;
+    public int day;
+    public int hour;
+    public int minute;
+
+    public TimeData()
+    {
+        week = 1;
+        day = 1;
+        hour = 7;
+        minute = 0;
+    }
+}
+
+public enum SpaceType
+{
+    FirstFloor,
+    SecondFloor,
+    Restaurant,
+    Myroom
+}
+
+[System.Serializable]
+public class LocationData
+{
+    public SpaceType spaceType;
+    public Vector3 pos;
+
+    public LocationData()
+    {
+        spaceType = SpaceType.SecondFloor;
+        pos = new Vector3(-5.5f, -1, 0);
+    }
+}
+
+[System.Serializable]
 public class PlayerData
 {
     public int HP;
@@ -126,9 +164,12 @@ public class PlayerData
 }
 
 [System.Serializable]
+
 public class StorageData
 {
     public PlayerData playerData;
+    public LocationData playerLocation;
+    public TimeData timeData;
     public List<FoodData> foodDatas;
     public InventoryData playerInven;
     public InventoryData foodBoxInven;
@@ -137,6 +178,8 @@ public class StorageData
     public StorageData()
     {
         playerData = new PlayerData();
+        playerLocation = new LocationData();
+        timeData = new TimeData();
         foodDatas = new List<FoodData>();
         playerInven = new InventoryData();
         foodBoxInven = new InventoryData();
@@ -159,14 +202,14 @@ public class JsonDataManager : Singleton<JsonDataManager>
     {
         DontDestroyOnLoad(this);
 
-        //ResetPlayerJsonData();
+        ResetPlayerJsonData();
         //SavePlayerJsonData();
         LoadPlayerJsonData();
         LoadItemJsonData();
         LoadObjectJsonData();
     }
 
-    private void ResetPlayerJsonData()
+    public void ResetPlayerJsonData()
     {
         filePath = "Assets/7.Data/PlayerData.json";
 
@@ -174,7 +217,7 @@ public class JsonDataManager : Singleton<JsonDataManager>
         File.WriteAllText(filePath, jsonData, Encoding.UTF8);
     }
 
-    private void SavePlayerJsonData()
+    public void SavePlayerJsonData()
     {
         filePath = "Assets/7.Data/PlayerData.json";
 
@@ -182,7 +225,7 @@ public class JsonDataManager : Singleton<JsonDataManager>
         File.WriteAllText(filePath, jsonData, Encoding.UTF8);
     }
 
-    private void LoadPlayerJsonData()
+    public void LoadPlayerJsonData()
     {
         filePath = "Assets/7.Data/PlayerData.json";
 
@@ -190,7 +233,7 @@ public class JsonDataManager : Singleton<JsonDataManager>
         storageData = JsonUtility.FromJson<StorageData>(loadedJsonData);
     }
 
-    private void LoadObjectJsonData()
+    public void LoadObjectJsonData()
     {
         filePath = "Assets/7.Data/ObjectData.json";
 
@@ -198,7 +241,7 @@ public class JsonDataManager : Singleton<JsonDataManager>
         objectData = JsonUtility.FromJson<ObjectData>(loadedJsonData);
     }
 
-    private void LoadItemJsonData()
+    public void LoadItemJsonData()
     {
         filePath = "Assets/7.Data/ItemData.json";
 

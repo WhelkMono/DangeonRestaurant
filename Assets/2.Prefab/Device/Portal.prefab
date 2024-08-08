@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneName: Restaurant
+  sr: {fileID: 1930245156384534368}
 --- !u!212 &1930245156384534368
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -19,7 +19,7 @@ public class MainManager : MonoBehaviour
 
     public void OnGamePlay()
     {
+        LoadSceneManager.isFirstLoad = true;
         LoadSceneManager.LoadScene("Game");
-        SceneManager.LoadScene("PlayerUI", LoadSceneMode.Additive);
     }
 }
