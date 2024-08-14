@@ -28,8 +28,7 @@ public class RecipeSlot : MonoBehaviour
         {
             if(itemdata.id == foodData.id)
             {
-                count = itemdata.count;
-                break;
+                count += itemdata.count;
             }
         }
 

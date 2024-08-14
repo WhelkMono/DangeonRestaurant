@@ -18,6 +18,28 @@
             "price": 10,
             "satiety": 3,
             "taste": [ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ]
+        },
+        {
+            "id": 1,
+            "name": "벌꿀주",
+            "description": "벌꿀을 재료로 발효시킨 술이다.",
+            "recipe": [
+                {
+                    "id": 2,
+                    "count": 2
+                },
+                {
+                    "id": 3,
+                    "count": 1
+                },
+                {
+                    "id": 4,
+                    "count": 2
+                }
+            ],
+            "price": 32,
+            "satiety": 16,
+            "taste": [ 24, 27, 30, 33, 36, 39, 42, 45, 48, 51 ]
         }
     ],
     "ingredientDatas": [
@@ -34,6 +56,27 @@
             "description": "에벌래는 좋은 단백질원이죠",
             "price": 1,
             "satiety": 2
+        },
+        {
+            "id": 2,
+            "name": "물",
+            "description": "생명의 근원",
+            "price": 0,
+            "satiety": 0
+        },
+        {
+            "id": 3,
+            "name": "포도",
+            "description": "달달한 꿀",
+            "price": 2,
+            "satiety": 3
+        },
+        {
+            "id": 4,
+            "name": "꿀",
+            "description": "달달한 꿀",
+            "price": 7,
+            "satiety": 5
         }
     ]
 }

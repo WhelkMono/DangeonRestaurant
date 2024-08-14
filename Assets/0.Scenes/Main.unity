@@ -785,7 +785,10 @@ MonoBehaviour:
       HP: 100
       Hunger: 100
       Coin: 0
-    timedata:
+    playerLocation:
+      spaceType: 1
+      pos: {x: -5.5, y: -1, z: 0}
+    timeData:
       week: 1
       day: 1
       hour: 7
@@ -952,9 +955,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FoodSprites:
   - {fileID: 21300000, guid: 8fa37c2c8b9bd654c96a4fae10f387a1, type: 3}
+  - {fileID: 21300000, guid: ac99105dfc2ca304fbc9c37d3dff35e1, type: 3}
   IngredientSprites:
   - {fileID: 21300000, guid: 61d01e8616313344b978a6518fd86ed6, type: 3}
   - {fileID: 21300000, guid: 4043a37a958048f4a9402cf4f7c6157f, type: 3}
+  - {fileID: 21300000, guid: 0f0e2d7db9293f043b88599551cc0164, type: 3}
+  - {fileID: 21300000, guid: b6def80ab53fc8846898dc12b4bf5a5a, type: 3}
+  - {fileID: 21300000, guid: 213d37f2675510c44ad06fb526cd48f5, type: 3}
   GadgetSprites: []
 --- !u!1 &2031395137
 GameObject:
@@ -1000,3 +1007,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ef9d747fc658c044b345fdbbf685a62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pos: {x: 0, y: 0, z: 0}
+  isFirstLoad: 0

@@ -19,6 +19,7 @@ public class CookingManager : Singleton<CookingManager>
         public TMP_Text description;
         public Transform recipe_Content;
     }
+
     [System.Serializable]
     public class Cook_Panel
     {
@@ -38,24 +39,39 @@ public class CookingManager : Singleton<CookingManager>
         public TMP_Text CountTxt;
     }
 
+    [System.Serializable]
+    public class Research_Panel
+    {
+        public GameObject research_Panel;
+        public TMP_Text levelTxt;
+        public TMP_Text description;
+        public Transform recipe_Content;
+    }
+
     [SerializeField] private GameObject Cooking_Panel;
     [SerializeField] private Transform recipeSlot_Content;
     [SerializeField] private RecipeSlot recipeSlotPrefab;
     [SerializeField] private FoodData_Panel foodData_Panel;
     [SerializeField] private IngredientSlot ingredientSlotPrefab;
-
+    [SerializeField] private Research_Panel research_Panel;
+    [SerializeField] private ResearchSlot researchSlotPrepab;
     [SerializeField] private Cook_Panel cook_Panel;
     [SerializeField] private CookCheck_Panel cookCheck_Panel;
 
     private List<IngredientSlot> ingredientSlots;
     private List<RecipeSlot> recipeSlots;
+    private List<ResearchSlot> researchSlots;
     public bool isCooking;
 
     void Start()
     {
         ingredientSlots = new();
         recipeSlots = new();
-        Init();
+        researchSlots = new();
+        isCooking = false;
+        Cooking_Panel.SetActive(false);
+        cookCheck_Panel.cookCheck_Panel.SetActive(false);
+        research_Panel.research_Panel.SetActive(false);
     }
 
     private void Update()
@@ -65,9 +81,6 @@ public class CookingManager : Singleton<CookingManager>
 
     public void Init()
     {
-        isCooking = false;
-        Cooking_Panel.SetActive(false);
-
         int n = recipeSlots.Count;
         for (int i = 0; i < n; i++)
         {
@@ -86,6 +99,11 @@ public class CookingManager : Singleton<CookingManager>
     }
 
     private int _id;
+    private int _level;
+    private int _price1;
+    private int _price2;
+    private int _taste1;
+    private int _taste2;
 
     public void ShowFoodData(FoodData foodData)
     {
@@ -101,14 +119,18 @@ public class CookingManager : Singleton<CookingManager>
 
         FoodJsonData foodJsonData = JsonDataManager.Instance.itemData.foodDatas[foodData.id];
         _id = foodJsonData.id;
+        _level = foodData.level;
+        _price1 = Mathf.RoundToInt(foodJsonData.price + (foodJsonData.price * (foodData.level * 2 / 10f)));
+        _price2 = Mathf.RoundToInt(foodJsonData.price + (foodJsonData.price * ((foodData.level + 1) * 2 / 10f)));
+        _taste1 = foodJsonData.taste[foodData.level];
+        if(foodData.level < 10) _taste2 = foodJsonData.taste[foodData.level + 1];
         foodData_Panel.title.text = foodJsonData.name;
 
         foodData_Panel.image.sprite = SpriteManager.Instance.FoodSprites[foodData.id];
-        foodData_Panel.level.text = foodData.level.ToString();
-        foodData_Panel.price.text = 
-            Mathf.RoundToInt(foodJsonData.price + (foodJsonData.price * (foodData.level * 2 / 10f))).ToString();
-        foodData_Panel.satiety.text = foodJsonData.satiety.ToString();
-        foodData_Panel.taste.text = foodJsonData.taste[foodData.level].ToString();
+        foodData_Panel.level.text = "Lv." + _level.ToString();
+        foodData_Panel.price.text = "가격:" + _price1.ToString();
+        foodData_Panel.satiety.text = "포만감:" + foodJsonData.satiety.ToString();
+        foodData_Panel.taste.text = "맛:" + _taste1.ToString();
 
         foodData_Panel.description.text = foodJsonData.description;
 
@@ -131,8 +153,7 @@ public class CookingManager : Singleton<CookingManager>
             {
                 if (recipeId == data.id)
                 {
-                    possCount = data.count;
-                    break;
+                    possCount += data.count;
                 }
             }
 
@@ -146,10 +167,14 @@ public class CookingManager : Singleton<CookingManager>
 
         cook_Panel.slider.maxValue = cookCount;
         cook_Panel.slider.value = 1;
-        cook_Panel.image = foodData_Panel.image;
+        cook_Panel.image.sprite = foodData_Panel.image.sprite;
         cook_Panel.NameTxt.text = foodData_Panel.title.text;
         cook_Panel.CountTxt.text = "1/" + cook_Panel.slider.maxValue.ToString();
-        cook_Panel.cook_Panel.SetActive(true);
+
+        if(cookCount > 0)
+            cook_Panel.cook_Panel.SetActive(true);
+        else
+            cook_Panel.cook_Panel.SetActive(false);
     }
 
     public void OnSetCookCountTxt()
@@ -164,7 +189,7 @@ public class CookingManager : Singleton<CookingManager>
         cookCheck_Panel.cookCheck_Panel.SetActive(active);
         if (active)
         {
-            cookCheck_Panel.image = foodData_Panel.image;
+            cookCheck_Panel.image.sprite = foodData_Panel.image.sprite;
             cookCheck_Panel.NameTxt.text = foodData_Panel.title.text;
             cookCheck_Panel.CountTxt.text = cook_Panel.slider.value.ToString();
 
@@ -179,7 +204,7 @@ public class CookingManager : Singleton<CookingManager>
                 itemData = new();
                 itemData.type = ItemDataType.ingredientData;
                 itemData.id = recipe.id;
-                itemData.count = recipe.count;
+                itemData.count = recipe.count * (int)cook_Panel.slider.value;
 
                 PlayerUIManager.Instance.DeletedBoxItem(InventoyType.ingredient, itemData);
             }
@@ -187,13 +212,102 @@ public class CookingManager : Singleton<CookingManager>
         else
         {
             foodData_Panel.foodData_Panel.SetActive(false);
-            cook_Panel.cook_Panel.SetActive(false);
         }
     }
 
+    private bool isResearch = false;
     public void OnResearch()
     {
+        if (isResearch)
+        {
+            List<FoodData> foodDatas = JsonDataManager.Instance.storageData.foodDatas;
+            for (int i = 0; i < foodDatas.Count; i++)
+            {
+                if(foodDatas[i].id == _id)
+                {
+                    foodDatas[i].level++;
+                    break;
+                }
+            }
 
+            foreach (var recipe in JsonDataManager.Instance.itemData.foodDatas[_id].recipe)
+            {
+                ItemData itemData = new();
+                itemData.type = ItemDataType.ingredientData;
+                itemData.id = recipe.id;
+                itemData.count = recipe.count * _level * 2;
+
+                PlayerUIManager.Instance.DeletedBoxItem(InventoyType.ingredient, itemData);
+            }
+
+            Init();
+            OnResearchPanel(false);
+        }
+        else
+        {
+            Debug.Log("재료가 부족합니다.");
+        }
+    }
+
+    public void OnResearchPanel(bool active)
+    {
+        if (active)
+        {
+            if(_level == 10)
+            {
+                Debug.Log("최대 레벨입니다.");
+                return;
+            }
+
+            research_Panel.research_Panel.SetActive(true);
+
+            research_Panel.levelTxt.text = $"LV.{_level} -> LV.{_level + 1}";
+            research_Panel.description.text = $"가격:{_price1} -> {_price2}<br>맛:{_taste1} -> {_taste2}";
+
+            int n = researchSlots.Count;
+            for (int i = 0; i < n; i++)
+            {
+                Destroy(researchSlots[i].gameObject);
+            }
+
+            researchSlots = new();
+
+            FoodJsonData foodJsonData = JsonDataManager.Instance.itemData.foodDatas[_id];
+            List<ItemData> itemDatas = JsonDataManager.Instance.storageData.ingredientBoxInven.itemDatas;
+
+            int cookCount = -1;
+
+            for (int i = 0; i < ingredientSlots.Count; i++)
+            {
+                Sprite sprite = ingredientSlots[i].image.sprite;
+                string _name = ingredientSlots[i].nameTxt.text;
+
+                int requCount = foodJsonData.recipe[i].count * _level * 2;
+                int possCount = 0;
+
+                foreach (var data in itemDatas)
+                {
+                    if (foodJsonData.recipe[i].id == data.id)
+                    {
+                        possCount += data.count;
+                    }
+                }
+
+                ResearchSlot researchSlot = Instantiate(researchSlotPrepab, research_Panel.recipe_Content);
+                researchSlot.Init(sprite, _name, requCount, possCount);
+                researchSlots.Add(researchSlot);
+
+                if (Mathf.FloorToInt((float)possCount / requCount) < cookCount || cookCount == -1)
+                    cookCount = Mathf.FloorToInt((float)possCount / requCount);
+            }
+
+            isResearch = cookCount > 0 ? true : false;
+        }
+        else
+        {
+            research_Panel.research_Panel.SetActive(false);
+            foodData_Panel.foodData_Panel.SetActive(false);
+        }
     }
 
     public void OnSort(TMP_Dropdown tMP_Dropdown)
@@ -228,6 +342,7 @@ public class CookingManager : Singleton<CookingManager>
         {
             //playerInventory 끄기
             PlayerUIManager.Instance.OnPlayerInven(false);
+            Init();
         }
         GameMgr.Instance.Pause(isCooking);
     }

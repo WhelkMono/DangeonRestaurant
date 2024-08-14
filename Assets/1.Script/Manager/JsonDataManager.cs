@@ -105,7 +105,7 @@ public class FoodData
     //tset¿ëµµ
     public FoodData()
     {
-        id = 0;
+        id = 1;
         level = 1;
     }
 }
