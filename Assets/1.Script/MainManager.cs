@@ -20,6 +20,15 @@ public class MainManager : MonoBehaviour
     public void OnGamePlay()
     {
         LoadSceneManager.isFirstLoad = true;
-        LoadSceneManager.LoadScene("Game");
+
+        LocationData locationData = JsonDataManager.Instance.storageData.playerLocation;
+        string sceneName = "Game";
+
+        if (locationData.spaceType == SpaceType.Restaurant ||
+            locationData.spaceType == SpaceType.Myroom)
+        {
+            sceneName = "Restaurant";
+        }
+        LoadSceneManager.LoadScene(sceneName);
     }
 }

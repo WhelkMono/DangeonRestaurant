@@ -7,7 +7,7 @@ public class SpawnPlayer : Singleton<SpawnPlayer>
 {
     [SerializeField] private PlayerAction playerObj;
 
-    private void Start()
+    private void Awake()
     {
         Spawn(GameMgr.Instance.pos);
     }

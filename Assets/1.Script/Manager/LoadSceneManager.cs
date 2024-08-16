@@ -55,18 +55,16 @@ public class LoadSceneManager : MonoBehaviour
                     if (isFirstLoad)
                     {
                         isFirstLoad = false;
-                        LocationData locationData = JsonDataManager.Instance.storageData.playerLocation;
                         string sceneName = "GameUI";
 
-                        if(locationData.spaceType == SpaceType.Restaurant &&
-                            locationData.spaceType == SpaceType.Myroom)
+                        if(nextScene == "Restaurant")
                         {
                             sceneName = "RestaurantUI";
                         }
 
                         SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
                         SceneManager.LoadScene("PlayerUI", LoadSceneMode.Additive);
-                        GameMgr.Instance.MabSetting(Vector3.zero, false);
+                        GameMgr.Instance.MabSetting(JsonDataManager.Instance.storageData.playerLocation.pos, true);
                         TimeManager.Instance.LoadData();
                     }
                     else if (nextScene == "Game")

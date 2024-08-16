@@ -10,6 +10,7 @@ public class NPCData
     public int id;
     public string name;
     public string[] desc;
+    public int[] emotion;
 }
 
 [System.Serializable]

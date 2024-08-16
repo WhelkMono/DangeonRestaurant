@@ -21,8 +21,7 @@ public class NPC : MonoBehaviour, GameObj
 
     public void Action()
     {
-        Debug.Log(npcData.name);
         if(!TalkManager.Instance.isAction)
-            StartCoroutine(TalkManager.Instance.Action(npcData.desc));
+            StartCoroutine(TalkManager.Instance.Action(npcData));
     }
 }

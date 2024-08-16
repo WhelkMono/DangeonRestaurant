@@ -23,7 +23,7 @@ public class ChangeGridManager : Singleton<ChangeGridManager>
         }
     }
 
-    public void ChangeGrid(SpaceType spaceType, Vector2 nextPos)
+    public void ChangeGrid(SpaceType spaceType, Vector3 nextPos)
     {
         for (int i = 0; i < grids.Length; i++)
         {

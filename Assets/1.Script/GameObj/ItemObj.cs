@@ -12,7 +12,7 @@ public class ItemObj : MonoBehaviour, GameObj
     }
     public void Action()
     {
-        if (PlayerUIManager.Instance.playerInventory.GetIt(itemData))
+        if (PlayerUIManager.Instance.playerInventory.GetIt(itemData) && gameObject != null)
         {
             Destroy(gameObject);
         }

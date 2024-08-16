@@ -45,7 +45,7 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
         }
 
         //스캔된 오브젝트 실행
-        if (Input.GetKeyDown(KeyCode.F) && scanObject != null)
+        if (Input.GetKeyDown(KeyCode.F) && scanObject != null && !GameMgr.Instance.IsPause)
         {
             playerInventory.SaveItemData();
             boxInventory.SaveItemData();
