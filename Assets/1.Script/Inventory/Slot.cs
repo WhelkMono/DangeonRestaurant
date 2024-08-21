@@ -5,10 +5,10 @@ using UnityEngine.EventSystems;
 
 public class Slot : MonoBehaviour, IDropHandler
 {
-    private InventoyType inventoyType;
+    private InventoryType inventoyType;
     public Item item;
 
-    public void Init(Item _item, InventoyType _inventoyType)
+    public void Init(Item _item, InventoryType _inventoyType)
     {
         item = _item;
         inventoyType = _inventoyType;
@@ -25,14 +25,14 @@ public class Slot : MonoBehaviour, IDropHandler
         {
             switch (inventoyType)
             {
-                case InventoyType.food:
+                case InventoryType.food:
                     if (droppedItem.itemData.type != ItemDataType.foodData)
                     {
                         Debug.Log("음식만 저장할 수 있습니다.");
                         return;
                     }
                     break;
-                case InventoyType.ingredient:
+                case InventoryType.ingredient:
                     if (droppedItem.itemData.type != ItemDataType.ingredientData)
                     {
                         Debug.Log("재료만 저장할 수 있습니다.");

@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerUIManager : Singleton<PlayerUIManager>
 {
+    [SerializeField] private GameObject playerWindow;
+    [SerializeField] private ProfilePanel profilePanel;
     [SerializeField] private GameObject interactionKey; //수정필요
     public Inventory playerInventory;
     [SerializeField] private Inventory boxInventory;
@@ -18,8 +21,10 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
     // Start is called before the first frame update
     void Start()
     {
-        playerInventory.Init(JsonDataManager.Instance.storageData.playerInven, InventoyType.player, slotPrefab, itemPrefab);
-        boxInventory.Init(JsonDataManager.Instance.storageData.foodBoxInven, InventoyType.food, slotPrefab, itemPrefab);
+        playerWindow.SetActive(false);
+        profilePanel.SetActivePanel(false);
+        playerInventory.Init(JsonDataManager.Instance.storageData.playerInven, InventoryType.player, slotPrefab, itemPrefab);
+        boxInventory.Init(JsonDataManager.Instance.storageData.foodBoxInven, InventoryType.food, slotPrefab, itemPrefab);
         playerInventory.OnInventory(false);
         boxInventory.OnInventory(false);
         isAction = false;
@@ -35,12 +40,12 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
             if (isAction == true)
             {
                 isAction = false;
-                OnPlayerInven(isAction);
+                OnPlayerWindow(isAction);
             }
             else if (!GameMgr.Instance.IsPause)
             {
                 isAction = true;
-                OnPlayerInven(isAction);
+                OnPlayerWindow(isAction);
             }
         }
 
@@ -52,6 +57,26 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
             interactionKey.SetActive(false);
             scanObject.Action();
         }
+    }
+
+    public void OnPlayerWindowChange(Toggle toggle)
+    {
+        if (toggle.isOn)
+            toggle.transform.localPosition = new Vector3(20, toggle.transform.localPosition.y, 0);
+        else
+            toggle.transform.localPosition = new Vector3(0, toggle.transform.localPosition.y, 0);
+    }
+
+    public void OnPlayerWindowChange(bool isInven)
+    {
+        OnPlayerInven(isInven);
+        profilePanel.SetActivePanel(!isInven);
+    }
+
+    public void OnPlayerWindow(bool active)
+    {
+        playerWindow.SetActive(active);
+        OnPlayerInven(active);
     }
 
     public void OnPlayerInven(bool active)
@@ -69,21 +94,21 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
         }
     }
 
-    public void DeletedBoxItem(InventoyType inventoyType, ItemData itemData)
+    public void DeletedBoxItem(InventoryType inventoyType, ItemData itemData)
     {
         SetBox(inventoyType);
         boxInventory.DeletedItem(itemData);
     }
 
-    public void SetBox(InventoyType inventoyType)
+    public void SetBox(InventoryType inventoyType)
     {
         InventoryData inventoryData;
         switch (inventoyType)
         {
-            case InventoyType.food:
+            case InventoryType.food:
                 inventoryData = JsonDataManager.Instance.storageData.foodBoxInven;
                 break;
-            case InventoyType.ingredient:
+            case InventoryType.ingredient:
                 inventoryData = JsonDataManager.Instance.storageData.ingredientBoxInven;
                 break;
             default:
@@ -93,20 +118,20 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
         boxInventory.Init(inventoryData, inventoyType, slotPrefab, itemPrefab);
     }
 
-    public void OnBoxInven(InventoyType inventoyType)
+    public void OnBoxInven(InventoryType inventoyType)
     {
         SetBox(inventoyType);
         isAction = true;
         boxInventory.OnInventory(true);
-        playerInventory.OnInventory(true);
+        OnPlayerWindow(true);
     }
 
     public void OnBoxInven(InventoryData _inventoryData)
     {
-        boxInventory.Init(_inventoryData, InventoyType.box, slotPrefab, itemPrefab);
+        boxInventory.Init(_inventoryData, InventoryType.box, slotPrefab, itemPrefab);
         isAction = true;
         boxInventory.OnInventory(true);
-        playerInventory.OnInventory(true);
+        OnPlayerWindow(true);
     }
 
     public void OnInteractionKey(GameObject _scanObject)

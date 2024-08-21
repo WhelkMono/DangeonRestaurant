@@ -76,7 +76,7 @@ public class CookingManager : Singleton<CookingManager>
 
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.T)) OnCookPanel();
+        if (Input.GetKeyDown(KeyCode.F) && isCooking) OnCookPanel();
     }
 
     public void Init()
@@ -206,7 +206,7 @@ public class CookingManager : Singleton<CookingManager>
                 itemData.id = recipe.id;
                 itemData.count = recipe.count * (int)cook_Panel.slider.value;
 
-                PlayerUIManager.Instance.DeletedBoxItem(InventoyType.ingredient, itemData);
+                PlayerUIManager.Instance.DeletedBoxItem(InventoryType.ingredient, itemData);
             }
         }
         else
@@ -237,7 +237,7 @@ public class CookingManager : Singleton<CookingManager>
                 itemData.id = recipe.id;
                 itemData.count = recipe.count * _level * 2;
 
-                PlayerUIManager.Instance.DeletedBoxItem(InventoyType.ingredient, itemData);
+                PlayerUIManager.Instance.DeletedBoxItem(InventoryType.ingredient, itemData);
             }
 
             Init();
@@ -341,7 +341,7 @@ public class CookingManager : Singleton<CookingManager>
         if (isCooking)
         {
             //playerInventory ²ô±â
-            PlayerUIManager.Instance.OnPlayerInven(false);
+            PlayerUIManager.Instance.OnPlayerWindow(false);
             Init();
         }
         GameMgr.Instance.Pause(isCooking);

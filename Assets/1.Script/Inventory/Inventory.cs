@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 
-public enum InventoyType
+public enum InventoryType
 {
     player,
     food,
@@ -16,16 +16,36 @@ public class Inventory : MonoBehaviour
 {
     [SerializeField] private GameObject InventoryPanel;
     [SerializeField] private GameObject invenContent;
+    [SerializeField] private TMP_Text tiltleTxt;
     private Slot slotPrefab;
     private Item itemPrefab;
     public List<Slot> invenSlots;
     private int invenCount;
-    public InventoyType inventoyType;
+    public InventoryType inventoryType;
 
-    public void Init(InventoryData inventoryData, InventoyType _inventoyType, Slot _slotPrefab, Item _itemPrefab)
+    public void Init(InventoryData inventoryData, InventoryType _inventoyType, Slot _slotPrefab, Item _itemPrefab)
     {
+        string _tiltleTxt = "Box";
+        switch (_inventoyType)
+        {
+            case InventoryType.player:
+                _tiltleTxt = "Inventory";
+                break;
+            case InventoryType.food:
+                _tiltleTxt = "FoodBox";
+                break;
+            case InventoryType.ingredient:
+                _tiltleTxt = "IngredientBox";
+                break;
+            case InventoryType.box:
+                _tiltleTxt = "Box";
+                break;
+        }
+
+        tiltleTxt.text = _tiltleTxt;
+
         invenCount = inventoryData.invenCount;
-        inventoyType = _inventoyType;
+        inventoryType = _inventoyType;
         slotPrefab = _slotPrefab;
         itemPrefab = _itemPrefab;
 
@@ -40,7 +60,7 @@ public class Inventory : MonoBehaviour
         for (int i = 0; i < inventoryData.invenCount; i++)
         {
             invenSlots.Add(Instantiate(slotPrefab, invenContent.transform));
-            invenSlots[i].Init(null, inventoyType);
+            invenSlots[i].Init(null, inventoryType);
         }
 
         //LoadItemData
@@ -50,7 +70,7 @@ public class Inventory : MonoBehaviour
         {
             Item item = Instantiate(itemPrefab, invenSlots[i].transform);
             item.Init(itemDatas[i]);
-            invenSlots[i].Init(item, inventoyType);
+            invenSlots[i].Init(item, inventoryType);
         }
     }
 
@@ -78,7 +98,7 @@ public class Inventory : MonoBehaviour
             {
                 Item item = Instantiate(itemPrefab, invenSlots[i].transform);
                 item.Init(itemData);
-                invenSlots[i].Init(item, inventoyType);
+                invenSlots[i].Init(item, inventoryType);
                 return true;
             }
         }
@@ -114,18 +134,18 @@ public class Inventory : MonoBehaviour
                 inventoryData.itemDatas.Add(invenSlots[i].item.itemData);
         }
 
-        switch (inventoyType)
+        switch (inventoryType)
         {
-            case InventoyType.player:
+            case InventoryType.player:
                 JsonDataManager.Instance.storageData.playerInven = inventoryData;
                 break;
-            case InventoyType.food:
+            case InventoryType.food:
                 JsonDataManager.Instance.storageData.foodBoxInven = inventoryData;
                 break;
-            case InventoyType.ingredient:
+            case InventoryType.ingredient:
                 JsonDataManager.Instance.storageData.ingredientBoxInven = inventoryData;
                 break;
-            case InventoyType.box:
+            case InventoryType.box:
                 Debug.Log("저장할 수 없는 데이터 입니다.");
                 break;
         }

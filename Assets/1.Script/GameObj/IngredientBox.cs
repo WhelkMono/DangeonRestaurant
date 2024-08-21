@@ -13,6 +13,6 @@ public class IngredientBox : MonoBehaviour, GameObj
 
     public void Action()
     {
-        PlayerUIManager.Instance.OnBoxInven(InventoyType.ingredient);
+        PlayerUIManager.Instance.OnBoxInven(InventoryType.ingredient);
     }
 }

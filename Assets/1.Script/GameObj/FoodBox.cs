@@ -13,6 +13,6 @@ public class FoodBox : MonoBehaviour, GameObj
 
     public void Action()
     {
-        PlayerUIManager.Instance.OnBoxInven(InventoyType.food);
+        PlayerUIManager.Instance.OnBoxInven(InventoryType.food);
     }
 }
