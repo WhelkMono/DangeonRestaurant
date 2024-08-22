@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
-public class Item : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class Item : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Image image;
     [SerializeField] private TMP_Text countTxt;
@@ -14,6 +14,34 @@ public class Item : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
     public Slot slot;
 
     private Vector2 offset;
+    private bool isPointer = false;
+    private float delay = 0;
+
+    private void Update()
+    {
+        if (isPointer)
+        {
+            delay += Time.unscaledDeltaTime;
+
+            if (delay >= 0.5f)
+            {
+                PlayerUIManager.Instance.AppearItemDesc(itemData, transform.position);
+                isPointer = false;
+            }
+        }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        delay = 0;
+        isPointer = true;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        isPointer = false;
+        PlayerUIManager.Instance.DisappearItemDesc();
+    }
 
     public void Init(ItemData _itemData)
     {
@@ -23,13 +51,10 @@ public class Item : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         switch (_itemData.type)
         {
             case ItemDataType.foodData:
-                    image.sprite = SpriteManager.Instance.FoodSprites[itemData.id];
+                image.sprite = SpriteManager.Instance.FoodSprites[itemData.id];
                 break;
             case ItemDataType.ingredientData:
                 image.sprite = SpriteManager.Instance.IngredientSprites[itemData.id];
-                break;
-            case ItemDataType.gadget:
-                image.sprite = SpriteManager.Instance.GadgetSprites[itemData.id];
                 break;
         }
         countTxt.text = itemData.count.ToString();

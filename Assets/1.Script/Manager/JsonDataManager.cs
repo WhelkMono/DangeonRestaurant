@@ -64,8 +64,7 @@ public class ItemJsonData
 public enum ItemDataType
 {
     foodData,
-    ingredientData,
-    gadget
+    ingredientData
 }
 
 [System.Serializable]

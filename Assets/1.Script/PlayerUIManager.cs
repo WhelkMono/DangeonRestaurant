@@ -13,6 +13,8 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
     [SerializeField] private Slot slotPrefab;
     [SerializeField] private Item itemPrefab;
 
+    [SerializeField] private ItemDescWindow ItemDescWindow;
+
     private GameObj scanObject;
     private bool isAction; //인밴토리 열림 여부
 
@@ -29,6 +31,7 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
         boxInventory.OnInventory(false);
         isAction = false;
         interactionKey.SetActive(false);
+        DisappearItemDesc();
     }
 
     // Update is called once per frame
@@ -57,6 +60,17 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
             interactionKey.SetActive(false);
             scanObject.Action();
         }
+    }
+
+    public void DisappearItemDesc()
+    {
+        ItemDescWindow.gameObject.SetActive(false);
+    }
+
+    public void AppearItemDesc(ItemData itemData, Vector3 pos)
+    {
+        ItemDescWindow.Init(itemData, pos);
+        ItemDescWindow.gameObject.SetActive(true);
     }
 
     public void OnPlayerWindowChange(Toggle toggle)
