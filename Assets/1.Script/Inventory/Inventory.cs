@@ -97,7 +97,12 @@ public class Inventory : MonoBehaviour
             if (invenSlots[i].item == null)
             {
                 Item item = Instantiate(itemPrefab, invenSlots[i].transform);
-                item.Init(itemData);
+
+                ItemData _itemData = new ItemData();
+                _itemData.id = itemData.id;
+                _itemData.type = itemData.type;
+                _itemData.count = itemData.count;
+                item.Init(_itemData);
                 invenSlots[i].Init(item, inventoryType);
                 return true;
             }

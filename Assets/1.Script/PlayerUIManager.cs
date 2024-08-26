@@ -7,13 +7,12 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
 {
     [SerializeField] private GameObject playerWindow;
     [SerializeField] private ProfilePanel profilePanel;
-    [SerializeField] private GameObject interactionKey; //수정필요
     public Inventory playerInventory;
     [SerializeField] private Inventory boxInventory;
     [SerializeField] private Slot slotPrefab;
     [SerializeField] private Item itemPrefab;
-
     [SerializeField] private ItemDescWindow ItemDescWindow;
+    [SerializeField] private ClockUI clockUI;
 
     private GameObj scanObject;
     private bool isAction; //인밴토리 열림 여부
@@ -30,8 +29,9 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
         playerInventory.OnInventory(false);
         boxInventory.OnInventory(false);
         isAction = false;
-        interactionKey.SetActive(false);
         DisappearItemDesc();
+
+        TimeManager.Instance.clockUI = this.clockUI;
     }
 
     // Update is called once per frame
@@ -52,12 +52,15 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
             }
         }
 
+        if(GameMgr.Instance.IsPause)
+            return;
+
         //스캔된 오브젝트 실행
-        if (Input.GetKeyDown(KeyCode.F) && scanObject != null && !GameMgr.Instance.IsPause)
+        if (Input.GetKeyDown(KeyCode.F) && scanObject != null)
         {
             playerInventory.SaveItemData();
             boxInventory.SaveItemData();
-            interactionKey.SetActive(false);
+            GameMgr.Instance.Player.inventouryKey.SetActive(false);
             scanObject.Action();
         }
     }
@@ -148,7 +151,7 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
         OnPlayerWindow(true);
     }
 
-    public void OnInteractionKey(GameObject _scanObject)
+    public bool OnInteractionKey(GameObject _scanObject)
     {
         if(_scanObject != null && _scanObject.GetComponent<GameObj>() != null)
             scanObject = _scanObject.GetComponent<GameObj>();
@@ -157,11 +160,11 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
 
         if (scanObject != null && !TalkManager.Instance.isAction && Time.timeScale != 0)
         {
-            interactionKey.SetActive(true);
+            return true;
         }
         else
         {
-            interactionKey.SetActive(false);
+            return false;
         }
     }
 }

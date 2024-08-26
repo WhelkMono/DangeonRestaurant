@@ -18,8 +18,7 @@ public class TalkManager : Singleton<TalkManager>
         talkWindow.SetActive(false);
     }
 
-    // Start is called before the first frame update
-    public IEnumerator Action(NPCData npcData)
+    /*public IEnumerator Action(int id, string npcData)
     {
         isAction = true;
         talkWindow.SetActive(true);
@@ -37,5 +36,5 @@ public class TalkManager : Singleton<TalkManager>
 
         isAction = false;
         talkWindow.SetActive(false);
-    }
+    }*/
 }

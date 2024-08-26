@@ -103,9 +103,9 @@ public class FoodData
     public int level;
 
     //tset¿ëµµ
-    public FoodData()
+    public FoodData(int _id)
     {
-        id = 1;
+        id = _id;
         level = 1;
     }
 }
@@ -186,7 +186,9 @@ public class StorageData
         ingredientBoxInven = new InventoryData();
 
         //test
-        FoodData foodData = new FoodData();
+        FoodData foodData = new FoodData(0);
+        foodDatas.Add(foodData);
+        foodData = new FoodData(1);
         foodDatas.Add(foodData);
     }
 }

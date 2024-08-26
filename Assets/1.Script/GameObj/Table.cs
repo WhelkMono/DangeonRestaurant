@@ -11,11 +11,6 @@ public class Table : MonoBehaviour, GameObj
         sr = GetComponent<SpriteRenderer>();
     }
 
-    void Update()
-    {
-
-    }
-
     public void Action()
     {
         Debug.Log("!");

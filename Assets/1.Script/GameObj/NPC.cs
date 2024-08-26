@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPC : MonoBehaviour, GameObj
+public class NPC : MonoBehaviour
 {
     public int ID;
     NPCData npcData;
@@ -21,7 +21,7 @@ public class NPC : MonoBehaviour, GameObj
 
     public void Action()
     {
-        if(!TalkManager.Instance.isAction)
-            StartCoroutine(TalkManager.Instance.Action(npcData));
+        /*if(!TalkManager.Instance.isAction)
+            StartCoroutine(TalkManager.Instance.Action(npcData));*/
     }
 }

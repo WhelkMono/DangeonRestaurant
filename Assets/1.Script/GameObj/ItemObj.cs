@@ -10,6 +10,7 @@ public class ItemObj : MonoBehaviour, GameObj
     {
         itemData = _itemData;
     }
+
     public void Action()
     {
         if (PlayerUIManager.Instance.playerInventory.GetIt(itemData) && gameObject != null)

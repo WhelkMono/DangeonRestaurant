@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerAction : MonoBehaviour
 {
+    public GameObject inventouryKey;
+
     Rigidbody2D rigid;
     Animator am;
     SpriteRenderer sr;
@@ -33,6 +35,8 @@ public class PlayerAction : MonoBehaviour
         isAttack = false;
         attackDelay = 0.4f;
         attackTimer = 0f;
+
+        inventouryKey.SetActive(false);
     }
 
     // Update is called once per frame
@@ -43,7 +47,7 @@ public class PlayerAction : MonoBehaviour
 
         Attack();
         Move();
-        PlayerUIManager.Instance.OnInteractionKey(scanObject);
+        inventouryKey.SetActive(PlayerUIManager.Instance.OnInteractionKey(scanObject));
     }
 
     private void FixedUpdate()

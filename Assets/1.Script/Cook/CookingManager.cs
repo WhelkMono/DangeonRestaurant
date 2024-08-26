@@ -76,7 +76,10 @@ public class CookingManager : Singleton<CookingManager>
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F) && isCooking) OnCookPanel();
+        if (Input.GetKeyDown(KeyCode.F) && isCooking)
+        {
+            GameMgr.Instance.Pause(false);
+        }
     }
 
     public void Init()
@@ -333,6 +336,7 @@ public class CookingManager : Singleton<CookingManager>
 
     public void OnCookPanel()
     {
+        Debug.Log("ison");
         foodData_Panel.foodData_Panel.SetActive(false);
         cook_Panel.cook_Panel.SetActive(false);
         cookCheck_Panel.cookCheck_Panel.SetActive(false);
