@@ -1,26 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class MainManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject PlayButton;
+    public GameObject ContinueButton;
+    public GameObject AbandonRunButton;
+
+    private void Start()
     {
-        
+        bool bl = JsonDataManager.Instance.storageData.isPlay;
+        PlayButton.SetActive(!bl);
+        ContinueButton.SetActive(bl);
+        AbandonRunButton.SetActive(bl);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void OnGamePlay()
+    private void GameStart(string sceneName)
     {
         LoadSceneManager.isFirstLoad = true;
+        LoadSceneManager.LoadScene(sceneName);
+    }
 
+    public void OnPlay()
+    {
+        JsonDataManager.Instance.storageData.isPlay = true;
+        GameStart("Game");
+    }
+
+    public void OnContinue()
+    {
         LocationData locationData = JsonDataManager.Instance.storageData.playerLocation;
         string sceneName = "Game";
 
@@ -29,6 +38,19 @@ public class MainManager : MonoBehaviour
         {
             sceneName = "Restaurant";
         }
-        LoadSceneManager.LoadScene(sceneName);
+
+        GameStart(sceneName);
+    }
+
+    public void OnAbandonRun()
+    {
+        JsonDataManager.Instance.ResetPlayerJsonData();
+        JsonDataManager.Instance.LoadPlayerJsonData();
+        GameStart("Game");
+    }
+
+    public void OnSettings()
+    {
+        
     }
 }

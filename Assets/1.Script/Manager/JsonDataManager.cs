@@ -167,6 +167,7 @@ public class PlayerData
 
 public class StorageData
 {
+    public bool isPlay;
     public PlayerData playerData;
     public LocationData playerLocation;
     public TimeData timeData;
@@ -177,6 +178,7 @@ public class StorageData
 
     public StorageData()
     {
+        isPlay = false;
         playerData = new PlayerData();
         playerLocation = new LocationData();
         timeData = new TimeData();
@@ -186,10 +188,11 @@ public class StorageData
         ingredientBoxInven = new InventoryData();
 
         //test
+        /*
         FoodData foodData = new FoodData(0);
         foodDatas.Add(foodData);
         foodData = new FoodData(1);
-        foodDatas.Add(foodData);
+        foodDatas.Add(foodData);*/
     }
 }
 
@@ -204,7 +207,7 @@ public class JsonDataManager : Singleton<JsonDataManager>
     {
         DontDestroyOnLoad(this);
 
-        ResetPlayerJsonData();
+        //ResetPlayerJsonData();
         //SavePlayerJsonData();
         LoadPlayerJsonData();
         LoadItemJsonData();
