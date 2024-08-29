@@ -14,7 +14,6 @@ public class ItemDescWindow : MonoBehaviour
     public void Init(ItemData itemData, Vector3 pos)
     {
         transform.position = new Vector3(200, 0, 0) + pos;
-        Debug.Log(itemData.id);
 
         switch (itemData.type)
         {

@@ -336,7 +336,6 @@ public class CookingManager : Singleton<CookingManager>
 
     public void OnCookPanel()
     {
-        Debug.Log("ison");
         foodData_Panel.foodData_Panel.SetActive(false);
         cook_Panel.cook_Panel.SetActive(false);
         cookCheck_Panel.cookCheck_Panel.SetActive(false);

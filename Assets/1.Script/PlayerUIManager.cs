@@ -11,7 +11,7 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
     [SerializeField] private Inventory boxInventory;
     [SerializeField] private Slot slotPrefab;
     [SerializeField] private Item itemPrefab;
-    [SerializeField] private ItemDescWindow ItemDescWindow;
+    [SerializeField] private ItemDescWindow ItemDescWindowPrafap;
     [SerializeField] private ClockUI clockUI;
 
     private GameObj scanObject;
@@ -29,7 +29,6 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
         playerInventory.OnInventory(false);
         boxInventory.OnInventory(false);
         isAction = false;
-        DisappearItemDesc();
 
         TimeManager.Instance.clockUI = this.clockUI;
     }
@@ -42,6 +41,7 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
         {
             if (isAction == true)
             {
+                DisappearItemDesc();
                 isAction = false;
                 OnPlayerWindow(isAction);
             }
@@ -65,15 +65,20 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
         }
     }
 
+    ItemDescWindow itemDescWindow;
+
     public void DisappearItemDesc()
     {
-        ItemDescWindow.gameObject.SetActive(false);
+        if(itemDescWindow != null)
+        {
+            Destroy(itemDescWindow.gameObject);
+        }
     }
 
     public void AppearItemDesc(ItemData itemData, Vector3 pos)
     {
-        ItemDescWindow.Init(itemData, pos);
-        ItemDescWindow.gameObject.SetActive(true);
+        itemDescWindow = Instantiate(ItemDescWindowPrafap, canvasTrans);
+        itemDescWindow.Init(itemData, pos);
     }
 
     public void OnPlayerWindowChange(Toggle toggle)

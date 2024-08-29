@@ -88,6 +88,7 @@ public class Inventory : MonoBehaviour
                 invenSlots[i].item.itemData.id == itemData.id)
             {
                 invenSlots[i].item.AddData(itemData.count);
+                GotItemAlarm.Instance.PutOnItem(itemData);
                 return true;
             }
         }
@@ -104,6 +105,7 @@ public class Inventory : MonoBehaviour
                 _itemData.count = itemData.count;
                 item.Init(_itemData);
                 invenSlots[i].Init(item, inventoryType);
+                GotItemAlarm.Instance.PutOnItem(_itemData);
                 return true;
             }
         }

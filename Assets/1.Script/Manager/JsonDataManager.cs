@@ -188,11 +188,11 @@ public class StorageData
         ingredientBoxInven = new InventoryData();
 
         //test
-        /*
+        
         FoodData foodData = new FoodData(0);
         foodDatas.Add(foodData);
         foodData = new FoodData(1);
-        foodDatas.Add(foodData);*/
+        foodDatas.Add(foodData);
     }
 }
 
