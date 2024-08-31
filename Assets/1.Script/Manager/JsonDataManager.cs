@@ -129,8 +129,8 @@ public class TimeData
 
 public enum SpaceType
 {
-    FirstFloor,
-    SecondFloor,
+    StartFloor,
+    HomeFloor,
     Restaurant,
     Myroom
 }
@@ -143,8 +143,8 @@ public class LocationData
 
     public LocationData()
     {
-        spaceType = SpaceType.SecondFloor;
-        pos = new Vector3(-5.5f, -1, 0);
+        spaceType = SpaceType.StartFloor;
+        pos = new Vector3(0, -10, 0);
     }
 }
 
@@ -207,7 +207,7 @@ public class JsonDataManager : Singleton<JsonDataManager>
     {
         DontDestroyOnLoad(this);
 
-        //ResetPlayerJsonData();
+        ResetPlayerJsonData();
         //SavePlayerJsonData();
         LoadPlayerJsonData();
         LoadItemJsonData();

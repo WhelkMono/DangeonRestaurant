@@ -62,4 +62,12 @@ public class GameMgr : Singleton<GameMgr>
         else
             sr.sortingOrder = 4;
     }
+
+    [SerializeField] private TextMesh DmgText;
+
+    public void CreateDamageText(Vector3 point, int dmg)
+    {
+        TextMesh dmgTextObj = Instantiate(DmgText, point, Quaternion.identity, PlayerUIManager.Instance.canvasTrans);
+        //dmgTextObj.text = dmg.ToString();
+    }
 }

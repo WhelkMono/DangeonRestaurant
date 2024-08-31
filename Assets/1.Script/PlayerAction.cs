@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerAction : MonoBehaviour
 {
+    [SerializeField] private GameObject AtackBox;
     public GameObject inventouryKey;
 
     Rigidbody2D rigid;
@@ -20,11 +21,13 @@ public class PlayerAction : MonoBehaviour
     bool isAttack;
     float attackDelay;
     float attackTimer;
+    public int hp;
 
     public bool isHouse;
 
     public void Init(Vector2 startPos, bool isHouse)
     {
+        hp = JsonDataManager.Instance.storageData.playerData.HP;
         transform.position = startPos;
         this.isHouse = isHouse;
 
@@ -85,6 +88,8 @@ public class PlayerAction : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Space))
         {
+            GameObject obj = Instantiate(AtackBox, transform);
+            obj.transform.localPosition = dirVec;
             isAttack = true;
             am.SetTrigger("attack");
         }
@@ -150,5 +155,24 @@ public class PlayerAction : MonoBehaviour
             else
                 am.SetBool("isChange", false);
         }
+    }
+
+    public IEnumerator TakeDmg(int Dmg)
+    {
+        if (hp <= 0)
+            yield break;
+
+        GameMgr.Instance.CreateDamageText(transform.position, Dmg);
+        hp -= Dmg;
+
+        if (hp <= 0)
+        {
+            Death();
+        }
+    }
+
+    public void Death()
+    {
+
     }
 }
