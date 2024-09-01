@@ -68,6 +68,6 @@ public class GameMgr : Singleton<GameMgr>
     public void CreateDamageText(Vector3 point, int dmg)
     {
         TextMesh dmgTextObj = Instantiate(DmgText, point, Quaternion.identity, PlayerUIManager.Instance.canvasTrans);
-        //dmgTextObj.text = dmg.ToString();
+        dmgTextObj.text = dmg.ToString();
     }
 }

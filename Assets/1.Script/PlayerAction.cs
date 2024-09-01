@@ -14,20 +14,20 @@ public class PlayerAction : MonoBehaviour
     Vector2 dirVec;
     GameObject scanObject;
 
-    public float speed;
+    public int speed;
     float h;
     float v;
     bool isHorizonMove; 
     bool isAttack;
     float attackDelay;
     float attackTimer;
-    public int hp;
-
     public bool isHouse;
+    public PlayerData data;
 
     public void Init(Vector2 startPos, bool isHouse)
     {
-        hp = JsonDataManager.Instance.storageData.playerData.HP;
+        data = JsonDataManager.Instance.storageData.playerData;
+
         transform.position = startPos;
         this.isHouse = isHouse;
 
@@ -159,13 +159,13 @@ public class PlayerAction : MonoBehaviour
 
     public IEnumerator TakeDmg(int Dmg)
     {
-        if (hp <= 0)
+        if (data.HP <= 0)
             yield break;
 
         GameMgr.Instance.CreateDamageText(transform.position, Dmg);
-        hp -= Dmg;
+        data.HP -= Dmg;
 
-        if (hp <= 0)
+        if (data.HP <= 0)
         {
             Death();
         }

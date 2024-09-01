@@ -20,8 +20,10 @@ public class FollwerCam : MonoBehaviour
     void Update()
     {
         Vector3 vec = p.transform.position;
-        float clmapX = Mathf.Clamp(vec.x, -20f, 20f);
-        float clmapY = Mathf.Clamp(vec.y, -20f, 20f);
+        float x = ChangeGridManager.Instance.nowGrid.xSize - 11f;
+        float y = ChangeGridManager.Instance.nowGrid.ySize - 6.5f;
+        float clmapX = Mathf.Clamp(vec.x, -x, x);
+        float clmapY = Mathf.Clamp(vec.y, -y, y);
         transform.position = new Vector3(clmapX, clmapY, -10);
     }
 }

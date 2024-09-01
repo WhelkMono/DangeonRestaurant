@@ -3428,13 +3428,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b832c352c2a9a0b42bbf4b3b66ad9f87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainSpaceType: 2
   grids:
   - spaceType: 2
     grid: {fileID: 398030046}
     obj: {fileID: 110672460}
+    xSize: 0
+    ySize: 0
   - spaceType: 3
     grid: {fileID: 1541150944}
     obj: {fileID: 1634648094}
+    xSize: 0
+    ySize: 0
+  nowGrid:
+    spaceType: 0
+    grid: {fileID: 0}
+    obj: {fileID: 0}
+    xSize: 0
+    ySize: 0
 --- !u!4 &1759962160
 Transform:
   m_ObjectHideFlags: 0
