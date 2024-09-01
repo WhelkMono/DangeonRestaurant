@@ -157,18 +157,47 @@ public class PlayerAction : MonoBehaviour
         }
     }
 
-    public IEnumerator TakeDmg(int Dmg)
+    public void SetHunger(int value)
     {
-        if (data.HP <= 0)
-            yield break;
+        if (data.Hunger <= 0)
+            return;
 
-        GameMgr.Instance.CreateDamageText(transform.position, Dmg);
-        data.HP -= Dmg;
+        data.Hunger += value;
+        JsonDataManager.Instance.storageData.playerData.Hunger = data.Hunger;
 
-        if (data.HP <= 0)
+        if (value < 0) SetHP(-value);
+
+        if (data.Hunger > 100) data.Hunger = 100;
+        else if (data.Hunger <= 0)
         {
+            data.Hunger = 0;
             Death();
         }
+    }
+
+    public void SetHP(int value)
+    {
+        if (data.HP <= 0)
+            return;
+
+        data.HP += value;
+        JsonDataManager.Instance.storageData.playerData.HP = data.HP;
+
+        if (data.HP > 100) data.HP = 100;
+        else if (data.HP <= 0)
+        {
+            data.HP = 0;
+            Death();
+        }
+    }
+
+    public void TakeDmg(int Dmg)
+    {
+        if (data.HP <= 0)
+            return;
+
+        SetHP(-Dmg);
+        GameMgr.Instance.CreateDamageText(transform.position, Dmg);
     }
 
     public void Death()

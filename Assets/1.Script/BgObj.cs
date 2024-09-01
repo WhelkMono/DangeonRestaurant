@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class BgObj : MonoBehaviour
 {
+    public float center;
+
     SpriteRenderer sr;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         sr = GetComponent<SpriteRenderer>();
     }
 
     private void Update()
     {
-        GameMgr.Instance.SortSprite(sr);
+        GameMgr.Instance.SortSprite(sr, transform.position.y + center);
     }
 }

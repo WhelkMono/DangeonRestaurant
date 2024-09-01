@@ -78,7 +78,7 @@ public class Enemy : MonoBehaviour
             atkTimer = 0f;
             state = State.Attak;
             animator.SetTrigger("attack");
-            StartCoroutine(p.TakeDmg(data.Power));
+            p.TakeDmg(data.Power);
         }
     }
 
@@ -96,8 +96,6 @@ public class Enemy : MonoBehaviour
             sr.flipX = true;
         else if (dir.normalized.x < 0)
             sr.flipX = false;
-
-        atkTimer = 0;
     }
 
     public IEnumerator TakeDmg(int Dmg)

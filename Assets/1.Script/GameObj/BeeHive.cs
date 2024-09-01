@@ -14,12 +14,6 @@ public class BeeHive : MonoBehaviour, GameObj
         sr = GetComponent<SpriteRenderer>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        GameMgr.Instance.SortSprite(sr);
-    }
-
     public void Action()
     {
         gameObject.GetComponent<Collider2D>().enabled = false;

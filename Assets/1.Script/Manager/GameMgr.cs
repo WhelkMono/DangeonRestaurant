@@ -63,6 +63,21 @@ public class GameMgr : Singleton<GameMgr>
             sr.sortingOrder = 4;
     }
 
+    public void SortSprite(SpriteRenderer sr, float center)
+    {
+        if (p == null)
+        {
+            p = FindAnyObjectByType<PlayerAction>();
+            if (p == null)
+                return;
+        }
+
+        if (p.transform.position.y - center > 0)
+            sr.sortingOrder = 6;
+        else
+            sr.sortingOrder = 4;
+    }
+
     [SerializeField] private TextMesh DmgText;
 
     public void CreateDamageText(Vector3 point, int dmg)

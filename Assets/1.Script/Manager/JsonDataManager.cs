@@ -113,14 +113,12 @@ public class FoodData
 [System.Serializable]
 public class TimeData
 {
-    public int week;
     public int day;
     public int hour;
     public int minute;
 
     public TimeData()
     {
-        week = 1;
         day = 1;
         hour = 7;
         minute = 0;
@@ -206,7 +204,7 @@ public class JsonDataManager : Singleton<JsonDataManager>
     {
         DontDestroyOnLoad(this);
 
-        ResetPlayerJsonData();
+        //ResetPlayerJsonData();
         //SavePlayerJsonData();
         LoadPlayerJsonData();
         LoadItemJsonData();
@@ -223,8 +221,9 @@ public class JsonDataManager : Singleton<JsonDataManager>
 
     public void SavePlayerJsonData()
     {
-        filePath = "Assets/7.Data/PlayerData.json";
+        TimeManager.Instance.SaveData();
 
+        filePath = "Assets/7.Data/PlayerData.json";
         string jsonData = JsonUtility.ToJson(storageData);
         File.WriteAllText(filePath, jsonData, Encoding.UTF8);
     }

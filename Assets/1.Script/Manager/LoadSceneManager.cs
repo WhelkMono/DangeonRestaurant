@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class LoadSceneManager : MonoBehaviour
 {
@@ -10,10 +11,30 @@ public class LoadSceneManager : MonoBehaviour
     public static bool isFirstLoad = false;
 
     [SerializeField] private Image progresBar;
+    [SerializeField] private TMP_Text loadingTxt;
+
+    private float timer;
+
+    public void Awake()
+    {
+        loadingTxt.text = "Loading";
+        progresBar.fillAmount = 0f;
+    }
 
     public void Start()
     {
         StartCoroutine(LoadSceneProcess());
+    }
+
+    public void Update()
+    {
+        timer += Time.deltaTime;
+
+        if (timer < 0.5f) return;
+        timer = 0;
+
+        if (loadingTxt.text == "Loading...") loadingTxt.text = "Loading";
+        else loadingTxt.text += ".";
     }
 
     public static void LoadScene(string sceneName)
@@ -29,7 +50,7 @@ public class LoadSceneManager : MonoBehaviour
         op.allowSceneActivation = false;
 
         float timer = 0f;
-        float delay = 0f;
+        float delay = 1f;
 
         while (!op.isDone)
         {
