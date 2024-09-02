@@ -57,6 +57,8 @@ public class CookingManager : Singleton<CookingManager>
     [SerializeField] private ResearchSlot researchSlotPrepab;
     [SerializeField] private Cook_Panel cook_Panel;
     [SerializeField] private CookCheck_Panel cookCheck_Panel;
+    [SerializeField] private AlarmTxt alarmTxt;
+    [SerializeField] private Transform center;
 
     private List<IngredientSlot> ingredientSlots;
     private List<RecipeSlot> recipeSlots;
@@ -248,7 +250,7 @@ public class CookingManager : Singleton<CookingManager>
         }
         else
         {
-            Debug.Log("재료가 부족합니다.");
+            Instantiate(alarmTxt, center).Init("재료가 부족합니다.");
         }
     }
 
@@ -258,7 +260,7 @@ public class CookingManager : Singleton<CookingManager>
         {
             if(_level == 10)
             {
-                Debug.Log("최대 레벨입니다.");
+                Instantiate(alarmTxt, center).Init("최대 레벨입니다.");
                 return;
             }
 

@@ -222,6 +222,7 @@ public class JsonDataManager : Singleton<JsonDataManager>
     public void SavePlayerJsonData()
     {
         TimeManager.Instance.SaveData();
+        storageData.isPlay = true;
 
         filePath = "Assets/7.Data/PlayerData.json";
         string jsonData = JsonUtility.ToJson(storageData);

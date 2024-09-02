@@ -24,7 +24,6 @@ public class MainManager : MonoBehaviour
 
     public void OnPlay()
     {
-        JsonDataManager.Instance.storageData.isPlay = true;
         GameStart("Game");
     }
 
@@ -46,7 +45,10 @@ public class MainManager : MonoBehaviour
     {
         JsonDataManager.Instance.ResetPlayerJsonData();
         JsonDataManager.Instance.LoadPlayerJsonData();
-        GameStart("Game");
+
+        PlayButton.SetActive(true);
+        ContinueButton.SetActive(false);
+        AbandonRunButton.SetActive(false);
     }
 
     public void OnSettings()
