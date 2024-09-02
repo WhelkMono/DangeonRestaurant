@@ -19,6 +19,11 @@ public class FlowTime : Singleton<FlowTime>
     [SerializeField] private GameObject flowTimePanal;
     [SerializeField] private DescTxt descTxt;
     [SerializeField] private Slider slider;
+    [SerializeField] private Button button;
+    [SerializeField] private Transform hand;
+    [SerializeField] private Transform handPreview;
+    [SerializeField] private Transform alarmParent;
+    [SerializeField] private AlarmTxt alarmTxt;
 
     private void Start()
     {
@@ -28,7 +33,11 @@ public class FlowTime : Singleton<FlowTime>
     public void SetPanal(bool isActive)
     {
         GameMgr.Instance.Pause(isActive);
+        slider.value = 1;
         flowTimePanal.SetActive(isActive);
+        slider.enabled = true;
+        button.enabled = true;
+        hand.eulerAngles = new Vector3(0, 0, TimeManager.Instance.timeData.hour * -15f);
         SetDataPreview();
     }
 
@@ -42,6 +51,29 @@ public class FlowTime : Singleton<FlowTime>
 
         TimeManager.Instance.FlowTime(timeData);
         JsonDataManager.Instance.SavePlayerJsonData();
+
+        StartCoroutine(TimeFlowAnimation());
+    }
+
+    private IEnumerator TimeFlowAnimation()
+    {
+        slider.enabled = false;
+        button.enabled = false;
+
+        yield return new WaitForSecondsRealtime(0.3f);
+
+        while (Mathf.Abs(Vector3.Distance(hand.eulerAngles, handPreview.eulerAngles)) > 1)
+        {
+            float t = -Mathf.Abs(Mathf.Clamp(hand.eulerAngles.z - handPreview.eulerAngles.z, -80 * Time.unscaledDeltaTime, 80 * Time.unscaledDeltaTime));
+            hand.Rotate(0, 0, t);
+            yield return null;
+        }
+
+        hand.eulerAngles = handPreview.eulerAngles;
+
+        yield return new WaitForSecondsRealtime(0.3f);
+
+        Instantiate(alarmTxt, alarmParent).Init("ภ๚ภๅตส");
         SetPanal(false);
     }
 
@@ -85,5 +117,8 @@ public class FlowTime : Singleton<FlowTime>
 
         descTxt.hP.text = $"HP: {pData.HP} -> {hp}";
         descTxt.sP.text = $"SP: {pData.Hunger} -> {sp}";
+
+        float t = timeData.hour * -15f;
+        handPreview.eulerAngles = new Vector3(0, 0, t);
     }
 }
