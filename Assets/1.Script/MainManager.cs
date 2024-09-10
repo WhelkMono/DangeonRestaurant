@@ -24,9 +24,22 @@ public class MainManager : MonoBehaviour
         public Button yesButton;
     }
 
+    [System.Serializable]
+    public class SettingWindow
+    {
+        public GameObject window;
+        public Slider masterSlider;
+        public TMP_Text masterValueTxt;
+        public Slider musicSlider;
+        public TMP_Text musicValueTxt;
+        public Slider effectsSlider;
+        public TMP_Text effectsValueTxt;
+    }
+
     [SerializeField] private GameObject backPanel;
     [SerializeField] private Buttons buttons;
     [SerializeField] private CheckBox checkBox;
+    [SerializeField] private SettingWindow settingWindow;
 
     private void Start()
     {
@@ -34,6 +47,7 @@ public class MainManager : MonoBehaviour
         buttons.PlayButton.SetActive(!bl);
         buttons.ContinueButton.SetActive(bl);
         buttons.NewGameButton.SetActive(bl);
+        OnSetting(false);
         OnVisibleCheckPanel(false);
     }
 
@@ -81,14 +95,14 @@ public class MainManager : MonoBehaviour
         OnVisibleCheckPanel(false);
     }
 
-    public void OnSetting()
+    public void OnSetting(bool isVi)
     {
-
+        settingWindow.window.SetActive(isVi);
     }
 
     public void OnQuit()
     {
-
+        Application.Quit();
     }
 
     public void SetCheckPanel(string desc)

@@ -2,9 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerUIManager : Singleton<PlayerUIManager>
 {
+    [System.Serializable]
+    public class SettingWindow
+    {
+        public GameObject window;
+        public Slider masterSlider;
+        public TMP_Text masterValueTxt;
+        public Slider musicSlider;
+        public TMP_Text musicValueTxt;
+        public Slider effectsSlider;
+        public TMP_Text effectsValueTxt;
+    }
+
+    [System.Serializable]
+    public class CheckBox
+    {
+        public GameObject box;
+        public TMP_Text descTxt;
+        public Button yesButton;
+    }
+
+    [SerializeField] private GameObject EscMenu;
+    [SerializeField] private SettingWindow settingWindow;
+    [SerializeField] private CheckBox checkBox;
     [SerializeField] private GameObject playerWindow;
     [SerializeField] private ProfilePanel profilePanel;
     public Inventory playerInventory;
@@ -31,11 +55,20 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
         isAction = false;
 
         TimeManager.Instance.clockUI = this.clockUI;
+
+        VisibleEscMenu(false);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            VisibleEscMenu(!EscMenu.activeSelf);
+        }
+
+        if (EscMenu.activeSelf) return;
+
         //인밴토리 열기
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -171,5 +204,46 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
         {
             return false;
         }
+    }
+
+    private void VisibleEscMenu(bool isVi)
+    {
+        GameMgr.Instance.Pause(isVi);
+
+        EscMenu.SetActive(isVi);
+        OnSetting(false);
+        OnVisibleCheckPanel(false);
+    }
+
+    public void OnSetting(bool isVi)
+    {
+        settingWindow.window.SetActive(isVi);
+    }
+
+    public void OnSave()
+    {
+        JsonDataManager.Instance.SavePlayerJsonData();
+    }
+
+    public void OnExit()
+    {
+        checkBox.yesButton.onClick.AddListener(GoToMain);
+        SetCheckPanel("저장하지 않은 진행 상황은 삭제됩니다.");
+        OnVisibleCheckPanel(true);
+    }
+
+    public void GoToMain()
+    {
+
+    }
+
+    public void SetCheckPanel(string desc)
+    {
+        checkBox.descTxt.text = desc;
+    }
+
+    public void OnVisibleCheckPanel(bool isVi)
+    {
+        checkBox.box.SetActive(isVi);
     }
 }
