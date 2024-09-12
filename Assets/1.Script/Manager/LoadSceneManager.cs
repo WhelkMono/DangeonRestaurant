@@ -100,6 +100,7 @@ public class LoadSceneManager : MonoBehaviour
                         SceneManager.LoadScene("PlayerUI", LoadSceneMode.Additive);
                         GameMgr.Instance.MabSetting(new Vector3(-5.5f, -1, 0), false);
                     }
+                    SceneManager.LoadScene("Menu", LoadSceneMode.Additive);
                     yield break;
                 }
             }
