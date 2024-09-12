@@ -35,6 +35,7 @@ public class MenuManager : Singleton<MenuManager>
     {
         OnVisibleSettingPanel(false);
         VisibleCheckPanel(false);
+        SetSoundData();
     }
 
     public void OnVisibleSettingPanel(bool isVi)
@@ -53,5 +54,31 @@ public class MenuManager : Singleton<MenuManager>
     {
         checkBox.box.SetActive(isVi);
         backPanel.SetActive(isVi);
+    }
+
+    private void SetSoundData()
+    {
+        SoundData soundData = JsonDataManager.Instance.storageData.soundData;
+        settingWindow.masterSlider.value = soundData.master;
+        settingWindow.musicSlider.value = soundData.music;
+        settingWindow.effectsSlider.value = soundData.effects;
+    }
+
+    public void OnMasterValue()
+    {
+        int value = (int)settingWindow.masterSlider.value;
+        settingWindow.masterValueTxt.text = $"{value}%";
+    }
+
+    public void OnMusicValue()
+    {
+        int value = (int)settingWindow.musicSlider.value;
+        settingWindow.musicValueTxt.text = $"{value}%";
+    }
+
+    public void OnEffectsValue()
+    {
+        int value = (int)settingWindow.effectsSlider.value;
+        settingWindow.effectsValueTxt.text = $"{value}%";
     }
 }

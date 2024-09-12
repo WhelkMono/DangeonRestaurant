@@ -162,11 +162,27 @@ public class PlayerData
 }
 
 [System.Serializable]
+public class SoundData
+{
+    public int master;
+    public int music;
+    public int effects;
+
+    public SoundData()
+    {
+        master = 50;
+        music = 50;
+        effects = 50;
+    }
+}
+
+[System.Serializable]
 
 public class StorageData
 {
     public bool isPlay;
     public PlayerData playerData;
+    public SoundData soundData;
     public LocationData playerLocation;
     public TimeData timeData;
     public List<FoodData> foodDatas;
@@ -178,6 +194,7 @@ public class StorageData
     {
         isPlay = false;
         playerData = new PlayerData();
+        soundData = new SoundData();
         playerLocation = new LocationData();
         timeData = new TimeData();
         foodDatas = new List<FoodData>();
