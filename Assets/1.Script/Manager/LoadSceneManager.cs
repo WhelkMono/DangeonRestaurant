@@ -98,7 +98,7 @@ public class LoadSceneManager : MonoBehaviour
                     {
                         SceneManager.LoadScene("RestaurantUI", LoadSceneMode.Additive);
                         SceneManager.LoadScene("PlayerUI", LoadSceneMode.Additive);
-                        GameMgr.Instance.MabSetting(new Vector3(-5.5f, -1, 0), false);
+                        GameMgr.Instance.MabSetting(new Vector3(-6f, -2.3f, 0), false);
                     }
                     SceneManager.LoadScene("Menu", LoadSceneMode.Additive);
                     yield break;
