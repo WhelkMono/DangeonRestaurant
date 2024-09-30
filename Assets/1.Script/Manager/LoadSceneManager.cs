@@ -13,8 +13,6 @@ public class LoadSceneManager : MonoBehaviour
     [SerializeField] private Image progresBar;
     [SerializeField] private TMP_Text loadingTxt;
 
-    private float timer;
-
     public void Awake()
     {
         loadingTxt.text = "Loading";
@@ -25,6 +23,8 @@ public class LoadSceneManager : MonoBehaviour
     {
         StartCoroutine(LoadSceneProcess());
     }
+
+    private float timer;
 
     public void Update()
     {

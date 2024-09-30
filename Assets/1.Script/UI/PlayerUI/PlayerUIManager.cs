@@ -62,10 +62,10 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
         //스캔된 오브젝트 실행
         if (Input.GetKeyDown(KeyCode.F) && scanObject != null)
         {
+            scanObject.Action();
             playerInventory.SaveItemData();
             boxInventory.SaveItemData();
             GameMgr.Instance.Player.inventouryKey.SetActive(false);
-            scanObject.Action();
         }
     }
 
@@ -162,11 +162,9 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
 
     public bool OnInteractionKey(GameObject _scanObject)
     {
-        if(_scanObject != null && _scanObject.GetComponent<GameObj>() != null)
-            scanObject = _scanObject.GetComponent<GameObj>();
-        else
-            scanObject = null;
-
+        scanObject = _scanObject;
+        
+        //미완
         if (scanObject != null && !TalkManager.Instance.isAction && Time.timeScale != 0)
         {
             return true;

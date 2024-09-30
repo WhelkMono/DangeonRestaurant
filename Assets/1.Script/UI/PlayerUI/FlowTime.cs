@@ -64,7 +64,8 @@ public class FlowTime : Singleton<FlowTime>
 
         while (Mathf.Abs(Vector3.Distance(hand.eulerAngles, handPreview.eulerAngles)) > 1)
         {
-            float t = -Mathf.Abs(Mathf.Clamp(hand.eulerAngles.z - handPreview.eulerAngles.z, -80 * Time.unscaledDeltaTime, 80 * Time.unscaledDeltaTime));
+            float t = -Mathf.Abs(Mathf.Clamp(hand.eulerAngles.z - handPreview.eulerAngles.z
+                , -80 * Time.unscaledDeltaTime, 80 * Time.unscaledDeltaTime));
             hand.Rotate(0, 0, t);
             yield return null;
         }

@@ -66,8 +66,8 @@ public class PlayerAction : MonoBehaviour
         Debug.DrawRay(rigid.position, dirVec * 0.7f, Color.red);
         RaycastHit2D rayHit = Physics2D.Raycast(rigid.position, dirVec, 1.2f, LayerMask.GetMask("Object"));
 
-        if (rayHit.collider != null)
-            scanObject = rayHit.collider.gameObject;
+        if (rayHit.collider != null && _scanObject.GetComponent<GameObj>() != null)
+            scanObject = rayHit.collider.gameObject.GetComponent<GameObj>();
         else
             scanObject = null;
     }
