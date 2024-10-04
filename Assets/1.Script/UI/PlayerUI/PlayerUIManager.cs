@@ -160,7 +160,7 @@ public class PlayerUIManager : Singleton<PlayerUIManager>
         OnPlayerWindow(true);
     }
 
-    public bool OnInteractionKey(GameObject _scanObject)
+    public bool OnInteractionKey(GameObj _scanObject)
     {
         scanObject = _scanObject;
         
